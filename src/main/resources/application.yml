@@ -1,0 +1,19 @@
+spring:
+  main:
+    allow-bean-definition-overriding: true
+  application:
+    name: demo13213
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://gondola.proxy.rlwy.net:28756/railway
+    username: postgres
+    password: ystIEZNnPJjtIzTIIuGtYOAmVtoZtbXH
+  jpa:
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+  liquibase:
+    change-log: classpath:migrations/changelog-master.xml
+    enabled: true
+
