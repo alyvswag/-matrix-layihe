@@ -6,7 +6,12 @@
         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
 
 
-    <changeSet id="1-create-user-table" author="talib">
+    <changeSet id="1-create-users-table" author="talib">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="users"/>
+            </not>
+        </preConditions>
         <createTable tableName="users">
             <column name="id" type="BIGINT" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
@@ -33,6 +38,11 @@
     </changeSet>
 
     <changeSet id="2-create-file-table" author="talib">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="files"/>
+            </not>
+        </preConditions>
         <createTable tableName="files">
             <column name="id" type="BIGINT" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
