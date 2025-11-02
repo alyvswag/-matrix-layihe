@@ -22,7 +22,7 @@ import static org.example.demo13213.constant.TokenConstants.PREFIX;
 
 
 @Component
-@RequiredArgsConstructor(access = AccessLevel.PRIVATE)
+@RequiredArgsConstructor
 @Slf4j
 public class AuthorizationFilter extends OncePerRequestFilter {
 

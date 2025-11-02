@@ -84,7 +84,6 @@ private LoginResponse prepareLoginResponse(String username) {
     return LoginResponse.builder()
             .accessToken(accessToken)
             .refreshToken(refreshToken)
-            .users(users)
             .build();
 
 }

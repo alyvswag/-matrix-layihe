@@ -4,12 +4,10 @@ package org.example.demo13213.security.jwt;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
-import lombok.AccessLevel;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.example.demo13213.model.dao.Users;
 import org.example.demo13213.security.p.SecurityProperties;
 import org.example.demo13213.utils.PublicPrivateKeyUtils;
+import org.slf4j.Logger;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -20,10 +18,13 @@ import static org.example.demo13213.constant.TokenConstants.EMAIL_KEY;
 
 
 @Component
-@Slf4j
-@RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 public class TokenProvider implements TokenService<Users, Claims> {
+    private static final Logger log = org.slf4j.LoggerFactory.getLogger(TokenProvider.class);
     final SecurityProperties securityProperties;
+
+    public TokenProvider(SecurityProperties securityProperties) {
+        this.securityProperties = securityProperties;
+    }
 
     @Override
     public List<String> generate(Users obj) {

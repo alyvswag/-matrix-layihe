@@ -13,5 +13,4 @@ import org.example.demo13213.model.dao.Users;
 public class LoginResponse {
     String accessToken;
     String refreshToken;
-    Users users;
 }

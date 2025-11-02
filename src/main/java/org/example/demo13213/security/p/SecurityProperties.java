@@ -8,7 +8,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 
 @Data
-@FieldDefaults(level = AccessLevel.PRIVATE)
+@FieldDefaults (level = AccessLevel.PRIVATE)
 @ConfigurationProperties("security")
 @Configuration
 public class SecurityProperties {
