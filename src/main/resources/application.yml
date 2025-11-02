@@ -5,9 +5,9 @@ spring:
     name: demo13213
   datasource:
     driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://gondola.proxy.rlwy.net:28756/railway
+    url: jdbc:postgresql://turntable.proxy.rlwy.net:58353/railway
     username: postgres
-    password: ystIEZNnPJjtIzTIIuGtYOAmVtoZtbXH
+    password: NYMlIYkMzSlynaVgOXFGiPtmgATQePXi
   jpa:
     show-sql: true
     properties:
