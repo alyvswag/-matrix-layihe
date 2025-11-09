@@ -14,7 +14,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import static org.example.demo13213.constant.TokenConstants.EMAIL_KEY;
+
+import static org.example.demo13213.constant.TokenConstants.USERNAME_KEY;
 
 
 @Component
@@ -27,7 +28,7 @@ public class TokenProvider implements TokenService<Users, Claims> {
     }
 
     @Override
-    public List<String> generate(Users obj) {
+    public List<String> generate(Users obj) {//T
         List<String> tokens = new ArrayList<>();
         tokens.add(0, generateAccessToken(obj));
         tokens.add(1, generateRefreshToken(obj));
@@ -45,18 +46,18 @@ public class TokenProvider implements TokenService<Users, Claims> {
 
     @Override
     public String getEmail(String token) {
-        return read(token).get(EMAIL_KEY, String.class);
+        return read(token).get(USERNAME_KEY, String.class);
     }
 
     private String generateAccessToken(Users users) {
         Claims claims = Jwts.claims();
-        claims.put(EMAIL_KEY, users.getUsername());
+        claims.put(USERNAME_KEY, users.getUsername());
 
         Date now = new Date();
         Date exp = new Date(now.getTime() + securityProperties.getJwt().getAccessTokenValidityTime());
 
         return Jwts.builder()
-                .setSubject(String.valueOf(users.getId()))
+                .setSubject(String.valueOf(users.getId())) //id vurulur
                 .setIssuedAt(now)
                 .setExpiration(exp)
                 .addClaims(claims)
@@ -66,7 +67,7 @@ public class TokenProvider implements TokenService<Users, Claims> {
 
     private String generateRefreshToken(Users users) {
         Claims claims = Jwts.claims();
-        claims.put(EMAIL_KEY, users.getUsername());
+        claims.put(USERNAME_KEY, users.getUsername());
 
         Date now = new Date();
         Date exp = new Date(now.getTime() + securityProperties.getJwt().getRefreshTokenValidityTime());

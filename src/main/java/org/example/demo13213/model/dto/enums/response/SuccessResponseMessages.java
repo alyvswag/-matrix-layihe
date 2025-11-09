@@ -10,7 +10,7 @@ import org.springframework.http.HttpStatus;
 @FieldDefaults(makeFinal = true ,level = AccessLevel.PRIVATE)
 public enum SuccessResponseMessages implements ResponseMessages {
     SUCCESS("Success", "Successfully", HttpStatus.OK),
-    CREATED("created","Successfully created",HttpStatus.CREATED);
+    CREATED("Created","Successfully created",HttpStatus.CREATED);
 
 
     String key;

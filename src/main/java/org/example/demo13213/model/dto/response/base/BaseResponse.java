@@ -3,6 +3,7 @@ package org.example.demo13213.model.dto.response.base;
 
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import io.jsonwebtoken.ExpiredJwtException;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 import org.example.demo13213.exception.BaseException;
@@ -97,6 +98,12 @@ public class BaseResponse<T> {
                 .build();
     }
     public static BaseResponse<?> error(SQLException ex) {
+        return BaseResponse.builder()
+                .meta(Meta.of(ex.getClass().getSimpleName(),ex.getMessage()))
+                .httpStatus(HttpStatus.BAD_REQUEST)
+                .build();
+    }
+    public static BaseResponse<?> error(ExpiredJwtException ex) {
         return BaseResponse.builder()
                 .meta(Meta.of(ex.getClass().getSimpleName(),ex.getMessage()))
                 .httpStatus(HttpStatus.BAD_REQUEST)

@@ -9,7 +9,7 @@ import java.util.regex.Pattern;
 public class CommonUtils {
     @FunctionalInterface
     public interface Checker {
-        boolean check();
+        boolean check(); //true false
     }
 
     public static void throwIf(Checker checker, BaseException ex) {
@@ -20,4 +20,6 @@ public class CommonUtils {
 
     //ternary operatorunun daha tekmil formasi
     //true gelse exception atilir
+    //false gelse davam edirik
+
 }

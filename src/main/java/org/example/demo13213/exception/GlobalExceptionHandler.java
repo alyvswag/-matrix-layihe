@@ -2,6 +2,8 @@ package org.example.demo13213.exception;
 
 
 
+import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.JwtException;
 import lombok.extern.slf4j.Slf4j;
 import org.example.demo13213.model.dto.response.base.BaseResponse;
 import org.springframework.http.HttpStatus;
@@ -25,5 +27,9 @@ public class GlobalExceptionHandler {
     public ResponseEntity<BaseResponse<?>> handleBaseException( SQLException  ex) {
         return  ResponseEntity.status(HttpStatus.BAD_REQUEST).body(BaseResponse.error(ex));
     }
-
+    @ExceptionHandler
+    public ResponseEntity<BaseResponse<?>> handleBaseException(ExpiredJwtException ex) {
+        return  ResponseEntity.status(HttpStatus.BAD_REQUEST).body(BaseResponse.error(ex));
+    }
 }
+//expride jwt exp handle ele

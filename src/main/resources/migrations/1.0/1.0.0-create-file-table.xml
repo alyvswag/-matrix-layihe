@@ -68,7 +68,7 @@
             <column name="analyzed_at" type="TIMESTAMP"/>
         </createTable>
     </changeSet>
-    <changeSet id="5-create-jobs-table" author="talib">
+    <changeSet id="3-create-jobs-table" author="talib">
         <preConditions onFail="MARK_RAN">
             <not>
                 <tableExists tableName="jobs"/>

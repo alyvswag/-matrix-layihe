@@ -43,10 +43,13 @@ public class AuthServiceImpl  implements AuthService{
     public LoginResponse registerUser(UserRequestCreate userRequestCreate) {
 
         throwIf(
-                () -> userRepo.findUserByUsername(userRequestCreate.getUsername()).isPresent(),
+                //1ci hisse checker
+                () -> userRepo.findUserByUsername(userRequestCreate.getUsername()).isPresent(),//optional<user1>.is
+                //2ci hisse exception
                 BaseException.of(USERNAME_ALREADY_REGISTERED)
         );
         //mapper islemedi manual mapping etdik
+
         Users users = new Users();
         users.setUsername(userRequestCreate.getUsername());
         users.setPassword(passwordEncoder.encode(userRequestCreate.getPassword()));
@@ -58,7 +61,7 @@ public class AuthServiceImpl  implements AuthService{
 
     @Override
     public LoginResponse login(LoginRequestPayload payload) {
-        authenticate(payload);
+        authenticate(payload);//bu metod pass ve useri yoxlayir
         return prepareLoginResponse(payload.getUsername());
     }
 
@@ -69,7 +72,7 @@ public class AuthServiceImpl  implements AuthService{
         SecurityContextHolder.getContext().setAuthentication(
                 new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities())
         );
-
+//istifadecinin kim oldugun saxlanilr
     }
 
 
@@ -77,7 +80,7 @@ public class AuthServiceImpl  implements AuthService{
 
 private LoginResponse prepareLoginResponse(String username) {
 
-    Users users = findUserByUser(username);
+    Users users = findUserByUser(username);//talib1
     String accessToken = tokenProvider.generate(users).get(0);
     String refreshToken = tokenProvider.generate(users).get(1);
 
@@ -93,17 +96,17 @@ private Users findUserByUser(String u) {
                     () -> BaseException.notFound(Users.class.getSimpleName(), "user", u)
             );
 }
-    private void authenticate(LoginRequestPayload request) {
-        try {
-            authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword())
-            );
-        } catch (AuthenticationException e) {
-            throw e.getCause() instanceof BaseException ?
-                    (BaseException) e.getCause() :
-                    BaseException.of(INVALID_USERNAME_OR_PASSWORD);//user ve yaxud parol yanlisdir
+        private void authenticate(LoginRequestPayload request) {
+            try {
+                authenticationManager.authenticate(
+                        new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword())
+                );
+            } catch (AuthenticationException e) {
+                throw e.getCause() instanceof BaseException ?
+                        (BaseException) e.getCause() :
+                        BaseException.of(INVALID_USERNAME_OR_PASSWORD);//user ve yaxud parol yanlisdir
+            }
         }
-    }
 
 }
 
