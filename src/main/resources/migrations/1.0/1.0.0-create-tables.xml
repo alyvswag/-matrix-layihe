@@ -1,0 +1,575 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <!-- 1. USERS -->
+    <changeSet id="1-create-users-table" author="nuray_aghazade">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="users"/>
+            </not>
+        </preConditions>
+        <createTable tableName="users">
+            <column name="id" type="UUID">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="username" type="VARCHAR(255)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+            <column name="password" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="full_name" type="VARCHAR(255)"/>
+            <column name="created_at" type="TIMESTAMPTZ" defaultValueComputed="NOW()">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_at" type="TIMESTAMPTZ" defaultValueComputed="NOW()">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <!-- 2. BRANDS -->
+    <changeSet id="2-create-brands-table" author="nuray_aghazade">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="brands"/>
+            </not>
+        </preConditions>
+        <createTable tableName="brands">
+            <column name="id" type="UUID">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="name" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="description" type="TEXT"/>
+            <column name="created_at" type="TIMESTAMPTZ" defaultValueComputed="NOW()">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_at" type="TIMESTAMPTZ" defaultValueComputed="NOW()">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <!-- 3. CATEGORIES -->
+    <changeSet id="3-create-categories-table" author="nuray_aghazade">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="categories"/>
+            </not>
+        </preConditions>
+        <createTable tableName="categories">
+            <column name="id" type="UUID">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="name" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="parent_id" type="UUID"/>
+            <column name="created_at" type="TIMESTAMPTZ" defaultValueComputed="NOW()">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_at" type="TIMESTAMPTZ" defaultValueComputed="NOW()">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <!-- self FK: categories.parent_id -> categories.id ON DELETE SET NULL -->
+    <changeSet id="4-add-fk-categories-parent" author="nuray_aghazade">
+        <addForeignKeyConstraint
+                baseTableName="categories"
+                baseColumnNames="parent_id"
+                constraintName="fk_categories_parent"
+                referencedTableName="categories"
+                referencedColumnNames="id"
+                onDelete="SET NULL"/>
+    </changeSet>
+
+    <!-- 4. PRODUCTS -->
+    <changeSet id="5-create-products-table" author="nuray_aghazade">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="products"/>
+            </not>
+        </preConditions>
+        <createTable tableName="products">
+            <column name="id" type="UUID">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="name" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="short_description" type="VARCHAR(500)"/>
+            <column name="description" type="TEXT"/>
+
+            <column name="brand_id" type="UUID"/>
+            <column name="category_id" type="UUID"/>
+
+            <column name="price" type="NUMERIC(10,2)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="is_active" type="BOOLEAN" defaultValueBoolean="true">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="is_vegan" type="BOOLEAN" defaultValueBoolean="false">
+                <constraints nullable="false"/>
+            </column>
+            <column name="is_for_sensitive_skin" type="BOOLEAN" defaultValueBoolean="false">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="skin_type" type="VARCHAR(30)"/>
+            <column name="concern_type" type="VARCHAR(30)"/>
+
+            <column name="created_at" type="TIMESTAMPTZ" defaultValueComputed="NOW()">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_at" type="TIMESTAMPTZ" defaultValueComputed="NOW()">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <!-- price >= 0 -->
+    <changeSet id="6-add-check-products-price" author="nuray_aghazade">
+        <sql>
+            ALTER TABLE products
+                ADD CONSTRAINT chk_products_price_non_negative CHECK (price &gt;= 0);
+        </sql>
+    </changeSet>
+
+    <!-- FK: products.brand_id -> brands.id ON DELETE SET NULL -->
+    <changeSet id="7-add-fk-products-brand" author="nuray_aghazade">
+        <addForeignKeyConstraint
+                baseTableName="products"
+                baseColumnNames="brand_id"
+                constraintName="fk_products_brand"
+                referencedTableName="brands"
+                referencedColumnNames="id"
+                onDelete="SET NULL"/>
+    </changeSet>
+
+    <!-- FK: products.category_id -> categories.id ON DELETE SET NULL -->
+    <changeSet id="8-add-fk-products-category" author="nuray_aghazade">
+        <addForeignKeyConstraint
+                baseTableName="products"
+                baseColumnNames="category_id"
+                constraintName="fk_products_category"
+                referencedTableName="categories"
+                referencedColumnNames="id"
+                onDelete="SET NULL"/>
+    </changeSet>
+
+    <!-- 5. PRODUCT_INVENTORY -->
+    <changeSet id="9-create-product-inventory-table" author="nuray_aghazade">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="product_inventory"/>
+            </not>
+        </preConditions>
+        <createTable tableName="product_inventory">
+            <column name="product_id" type="UUID">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="quantity" type="INT" defaultValueNumeric="0">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_at" type="TIMESTAMPTZ" defaultValueComputed="NOW()">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <!-- FK: product_inventory.product_id -> products.id ON DELETE CASCADE -->
+    <changeSet id="10-add-fk-product-inventory-product" author="nuray_aghazade">
+        <addForeignKeyConstraint
+                baseTableName="product_inventory"
+                baseColumnNames="product_id"
+                constraintName="fk_product_inventory_product"
+                referencedTableName="products"
+                referencedColumnNames="id"
+                onDelete="CASCADE"/>
+    </changeSet>
+
+    <!-- 6. CARTS -->
+    <changeSet id="11-create-carts-table" author="nuray_aghazade">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="carts"/>
+            </not>
+        </preConditions>
+        <createTable tableName="carts">
+            <column name="id" type="UUID">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="user_id" type="UUID">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_at" type="TIMESTAMPTZ" defaultValueComputed="NOW()">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_at" type="TIMESTAMPTZ" defaultValueComputed="NOW()">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <addUniqueConstraint
+                tableName="carts"
+                columnNames="user_id"
+                constraintName="uk_carts_user"/>
+    </changeSet>
+
+    <!-- FK: carts.user_id -> users.id ON DELETE CASCADE -->
+    <changeSet id="12-add-fk-carts-user" author="nuray_aghazade">
+        <addForeignKeyConstraint
+                baseTableName="carts"
+                baseColumnNames="user_id"
+                constraintName="fk_carts_user"
+                referencedTableName="users"
+                referencedColumnNames="id"
+                onDelete="CASCADE"/>
+    </changeSet>
+
+    <!-- 7. CART_ITEMS -->
+    <changeSet id="13-create-cart-items-table" author="nuray_aghazade">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="cart_items"/>
+            </not>
+        </preConditions>
+        <createTable tableName="cart_items">
+            <column name="id" type="UUID">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="cart_id" type="UUID">
+                <constraints nullable="false"/>
+            </column>
+            <column name="product_id" type="UUID">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_at" type="TIMESTAMPTZ" defaultValueComputed="NOW()">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_at" type="TIMESTAMPTZ" defaultValueComputed="NOW()">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <addUniqueConstraint
+                tableName="cart_items"
+                columnNames="cart_id,product_id"
+                constraintName="uk_cart_items_cart_product"/>
+    </changeSet>
+
+    <!-- FK: cart_items.cart_id -> carts.id ON DELETE CASCADE -->
+    <changeSet id="14-add-fk-cart-items-cart" author="nuray_aghazade">
+        <addForeignKeyConstraint
+                baseTableName="cart_items"
+                baseColumnNames="cart_id"
+                constraintName="fk_cart_items_cart"
+                referencedTableName="carts"
+                referencedColumnNames="id"
+                onDelete="CASCADE"/>
+    </changeSet>
+
+    <!-- FK: cart_items.product_id -> products.id ON DELETE RESTRICT -->
+    <changeSet id="15-add-fk-cart-items-product" author="nuray_aghazade">
+        <addForeignKeyConstraint
+                baseTableName="cart_items"
+                baseColumnNames="product_id"
+                constraintName="fk_cart_items_product"
+                referencedTableName="products"
+                referencedColumnNames="id"
+                onDelete="RESTRICT"/>
+    </changeSet>
+
+    <!-- 8. ORDERS -->
+    <changeSet id="16-create-orders-table" author="nuray_aghazade">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="orders"/>
+            </not>
+        </preConditions>
+        <createTable tableName="orders">
+            <column name="id" type="UUID">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="user_id" type="UUID">
+                <constraints nullable="false"/>
+            </column>
+            <column name="status" type="VARCHAR(30)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="total_items" type="INT" defaultValueNumeric="0">
+                <constraints nullable="false"/>
+            </column>
+            <column name="subtotal" type="NUMERIC(10,2)" defaultValueNumeric="0">
+                <constraints nullable="false"/>
+            </column>
+            <column name="discount_total" type="NUMERIC(10,2)" defaultValueNumeric="0">
+                <constraints nullable="false"/>
+            </column>
+            <column name="shipping_fee" type="NUMERIC(10,2)" defaultValueNumeric="0">
+                <constraints nullable="false"/>
+            </column>
+            <column name="grand_total" type="NUMERIC(10,2)" defaultValueNumeric="0">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="created_at" type="TIMESTAMPTZ" defaultValueComputed="NOW()">
+                <constraints nullable="false"/>
+            </column>
+            <column name="paid_at" type="TIMESTAMPTZ"/>
+            <column name="cancelled_at" type="TIMESTAMPTZ"/>
+        </createTable>
+    </changeSet>
+
+    <!-- FK: orders.user_id -> users.id ON DELETE CASCADE -->
+    <changeSet id="17-add-fk-orders-user" author="nuray_aghazade">
+        <addForeignKeyConstraint
+                baseTableName="orders"
+                baseColumnNames="user_id"
+                constraintName="fk_orders_user"
+                referencedTableName="users"
+                referencedColumnNames="id"
+                onDelete="CASCADE"/>
+    </changeSet>
+
+    <!-- 9. ORDER_ITEMS -->
+    <changeSet id="18-create-order-items-table" author="nuray_aghazade">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="order_items"/>
+            </not>
+        </preConditions>
+        <createTable tableName="order_items">
+            <column name="id" type="UUID">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="order_id" type="UUID">
+                <constraints nullable="false"/>
+            </column>
+            <column name="product_id" type="UUID"/>
+            <column name="quantity" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="unit_price" type="NUMERIC(10,2)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="line_total" type="NUMERIC(10,2)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_at" type="TIMESTAMPTZ" defaultValueComputed="NOW()">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <!-- quantity > 0 -->
+    <changeSet id="19-add-check-order-items-quantity" author="nuray_aghazade">
+        <sql>
+            ALTER TABLE order_items
+                ADD CONSTRAINT chk_order_items_quantity_positive CHECK (quantity &gt; 0);
+        </sql>
+    </changeSet>
+
+    <!-- FKs: order_items -->
+    <changeSet id="20-add-fk-order-items-order" author="nuray_aghazade">
+        <addForeignKeyConstraint
+                baseTableName="order_items"
+                baseColumnNames="order_id"
+                constraintName="fk_order_items_order"
+                referencedTableName="orders"
+                referencedColumnNames="id"
+                onDelete="CASCADE"/>
+    </changeSet>
+
+    <changeSet id="21-add-fk-order-items-product" author="nuray_aghazade">
+        <addForeignKeyConstraint
+                baseTableName="order_items"
+                baseColumnNames="product_id"
+                constraintName="fk_order_items_product"
+                referencedTableName="products"
+                referencedColumnNames="id"
+                onDelete="SET NULL"/>
+    </changeSet>
+
+    <!-- 10. COUPONS -->
+    <changeSet id="22-create-coupons-table" author="nuray_aghazade">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="coupons"/>
+            </not>
+        </preConditions>
+        <createTable tableName="coupons">
+            <column name="id" type="UUID">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="name" type="VARCHAR(100)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="discount_value" type="NUMERIC(10,2)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="category_id" type="UUID"/>
+            <column name="active_days" type="INT"/>
+            <column name="is_active" type="BOOLEAN" defaultValueBoolean="true">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_at" type="TIMESTAMPTZ" defaultValueComputed="NOW()">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_at" type="TIMESTAMPTZ" defaultValueComputed="NOW()">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <!-- FK: coupons.category_id -> categories.id ON DELETE SET NULL -->
+    <changeSet id="23-add-fk-coupons-category" author="nuray_aghazade">
+        <addForeignKeyConstraint
+                baseTableName="coupons"
+                baseColumnNames="category_id"
+                constraintName="fk_coupons_category"
+                referencedTableName="categories"
+                referencedColumnNames="id"
+                onDelete="SET NULL"/>
+    </changeSet>
+
+    <!-- 11. USER_COUPONS -->
+    <changeSet id="24-create-user-coupons-table" author="nuray_aghazade">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="user_coupons"/>
+            </not>
+        </preConditions>
+        <createTable tableName="user_coupons">
+            <column name="id" type="UUID">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="user_id" type="UUID">
+                <constraints nullable="false"/>
+            </column>
+            <column name="coupon_id" type="UUID">
+                <constraints nullable="false"/>
+            </column>
+            <column name="activated_at" type="TIMESTAMPTZ" defaultValueComputed="NOW()">
+                <constraints nullable="false"/>
+            </column>
+            <column name="expires_at" type="TIMESTAMPTZ">
+                <constraints nullable="false"/>
+            </column>
+            <column name="is_active" type="BOOLEAN" defaultValueBoolean="true">
+                <constraints nullable="false"/>
+            </column>
+            <column name="used_order_id" type="UUID"/>
+            <column name="used_at" type="TIMESTAMPTZ"/>
+
+        </createTable>
+
+        <addUniqueConstraint
+                tableName="user_coupons"
+                columnNames="user_id,coupon_id"
+                constraintName="uk_user_coupons_user_coupon"/>
+    </changeSet>
+
+    <!-- FKs: user_coupons -->
+    <changeSet id="25-add-fk-user-coupons-user" author="nuray_aghazade">
+        <addForeignKeyConstraint
+                baseTableName="user_coupons"
+                baseColumnNames="user_id"
+                constraintName="fk_user_coupons_user"
+                referencedTableName="users"
+                referencedColumnNames="id"
+                onDelete="CASCADE"/>
+    </changeSet>
+
+    <changeSet id="26-add-fk-user-coupons-coupon" author="nuray_aghazade">
+        <addForeignKeyConstraint
+                baseTableName="user_coupons"
+                baseColumnNames="coupon_id"
+                constraintName="fk_user_coupons_coupon"
+                referencedTableName="coupons"
+                referencedColumnNames="id"
+                onDelete="CASCADE"/>
+    </changeSet>
+
+    <changeSet id="27-add-fk-user-coupons-used-order" author="nuray_aghazade">
+        <addForeignKeyConstraint
+                baseTableName="user_coupons"
+                baseColumnNames="used_order_id"
+                constraintName="fk_user_coupons_used_order"
+                referencedTableName="orders"
+                referencedColumnNames="id"
+                onDelete="SET NULL"/>
+    </changeSet>
+
+    <!-- 12. REVIEWS -->
+    <changeSet id="28-create-reviews-table" author="nuray_aghazade">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="reviews"/>
+            </not>
+        </preConditions>
+        <createTable tableName="reviews">
+            <column name="id" type="UUID">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="product_id" type="UUID">
+                <constraints nullable="false"/>
+            </column>
+            <column name="user_id" type="UUID">
+                <constraints nullable="false"/>
+            </column>
+            <column name="rating" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="comment" type="TEXT"/>
+            <column name="created_at" type="TIMESTAMPTZ" defaultValueComputed="NOW()">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_at" type="TIMESTAMPTZ" defaultValueComputed="NOW()">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <!-- rating BETWEEN 1 AND 5 -->
+    <changeSet id="29-add-check-reviews-rating" author="nuray_aghazade">
+        <sql>
+            ALTER TABLE reviews
+                ADD CONSTRAINT chk_reviews_rating_range CHECK (rating &gt;= 1 AND rating &lt;= 5);
+        </sql>
+    </changeSet>
+
+    <!-- FKs: reviews -->
+    <changeSet id="30-add-fk-reviews-product" author="nuray_aghazade">
+        <addForeignKeyConstraint
+                baseTableName="reviews"
+                baseColumnNames="product_id"
+                constraintName="fk_reviews_product"
+                referencedTableName="products"
+                referencedColumnNames="id"
+                onDelete="CASCADE"/>
+    </changeSet>
+
+    <changeSet id="31-add-fk-reviews-user" author="nuray_aghazade">
+        <addForeignKeyConstraint
+                baseTableName="reviews"
+                baseColumnNames="user_id"
+                constraintName="fk_reviews_user"
+                referencedTableName="users"
+                referencedColumnNames="id"
+                onDelete="CASCADE"/>
+    </changeSet>
+
+</databaseChangeLog>

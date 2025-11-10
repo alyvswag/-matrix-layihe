@@ -8,5 +8,5 @@ public interface TokenService<T, V> {
 
     V read(String token);
 
-    String getEmail(String token);
+    String getUsername(String token);
 }

@@ -25,7 +25,6 @@ public class AuthController {
 
     final AuthService authService;
 
-
     @PostMapping("/login")
     public BaseResponse<LoginResponse> login(@RequestBody LoginRequestPayload loginRequestPayload) {
         return BaseResponse.success(authService.login(loginRequestPayload));
@@ -36,6 +35,19 @@ public class AuthController {
     public BaseResponse<LoginResponse> registerUser(@RequestBody UserRequestCreate userRequestCreate) {
         return BaseResponse.created(authService.registerUser(userRequestCreate));
     }
+
+    @PostMapping("/refresh-token/{refreshToken}")
+    public BaseResponse<LoginResponse> refreshToken(@PathVariable("refreshToken") String refreshToken) {
+        return BaseResponse.success(authService.refreshToken(refreshToken));
+    }
+
+    @PostMapping("/logout")
+    public BaseResponse<Void> logout() {
+        authService.logout();
+        return BaseResponse.success();
+    }
+
+    //test ucun
 
     @PostMapping("/test-auth")
     public BaseResponse<String> test() {

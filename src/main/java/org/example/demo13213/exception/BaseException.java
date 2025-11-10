@@ -1,11 +1,6 @@
 package org.example.demo13213.exception;
 
 
-
-
-
-
-
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 import org.example.demo13213.exception.types.NotFoundExceptionType;
@@ -51,6 +46,7 @@ public class BaseException extends RuntimeException {
                 )
                 .build();
     }
+
     public static BaseException nullNotAllowed(String target) {
         return BaseException.builder()
                 .responseMessages(NULL_NOT_ALLOWED)

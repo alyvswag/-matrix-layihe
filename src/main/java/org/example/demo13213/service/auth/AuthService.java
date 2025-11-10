@@ -10,5 +10,12 @@ public interface AuthService {
 
     LoginResponse login(@RequestBody LoginRequestPayload payload);
 
+    LoginResponse refreshToken(String refreshToken);
+
+    void logout();
+
     void setAuthentication(String user);
+
+
+
 }

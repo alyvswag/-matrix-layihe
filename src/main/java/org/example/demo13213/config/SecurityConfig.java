@@ -53,7 +53,7 @@ public class SecurityConfig {
         http
                 .authorizeHttpRequests(request -> request
                         // Yalnız bu iki endpoint açıq olsun
-                        .requestMatchers("/api/v1/auth/register-user", "/api/v1/auth/login" , "/api/v1/auth/no-auth").permitAll()
+                        .requestMatchers("/api/v1/auth/register-user", "/api/v1/auth/login" , "/api/v1/auth/no-auth","/api/v1/auth/refresh-token/").permitAll()
                         // Qalan hər şey üçün authentication tələb olunur
                         .anyRequest().authenticated()
                 )

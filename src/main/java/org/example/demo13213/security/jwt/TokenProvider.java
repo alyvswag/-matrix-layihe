@@ -45,13 +45,13 @@ public class TokenProvider implements TokenService<Users, Claims> {
     }
 
     @Override
-    public String getEmail(String token) {
+    public String getUsername(String token) {
         return read(token).get(USERNAME_KEY, String.class);
     }
 
     private String generateAccessToken(Users users) {
         Claims claims = Jwts.claims();
-        claims.put(USERNAME_KEY, users.getUsername());
+        claims.put(USERNAME_KEY, users.getUsername());//nuray1
 
         Date now = new Date();
         Date exp = new Date(now.getTime() + securityProperties.getJwt().getAccessTokenValidityTime());

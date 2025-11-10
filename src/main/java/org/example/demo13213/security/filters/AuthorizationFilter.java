@@ -48,7 +48,7 @@ public class AuthorizationFilter extends OncePerRequestFilter {
         String tokenRequest = request.getHeader(HttpHeaders.AUTHORIZATION);
         if (tokenRequest != null && tokenRequest.startsWith(PREFIX)) { //baslangic bearer ile baslamilidi
             String token = tokenRequest.substring(PREFIX.length());
-            authService.setAuthentication(tokenProvider.getEmail(token));
+            authService.setAuthentication(tokenProvider.getUsername(token));
         }
 
         filterChain.doFilter(request, response);//icaze verrik apinin islemesine
