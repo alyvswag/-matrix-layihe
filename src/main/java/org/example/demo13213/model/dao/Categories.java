@@ -1,4 +1,41 @@
 package org.example.demo13213.model.dao;
 
+import jakarta.persistence.*;
+import lombok.*;
+import lombok.experimental.FieldDefaults;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+
+import java.time.OffsetDateTime;
+import java.util.UUID;
+
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+@FieldDefaults(level = AccessLevel.PRIVATE)
+@Entity
+@Table(name = "categories")
 public class Categories {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(nullable = false, updatable = false)
+    UUID id;
+
+    @Column(nullable = false, length = 255)
+    String name;
+
+    @ManyToOne
+    @JoinColumn(name = "parent_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "fk_categories_parent"))
+    Categories parent;
+
+    @CreationTimestamp
+    @Column(name = "created_at", nullable = false, updatable = false)
+    OffsetDateTime createdAt;
+
+    @UpdateTimestamp
+    @Column(name = "updated_at", nullable = false)
+    OffsetDateTime updatedAt;
 }

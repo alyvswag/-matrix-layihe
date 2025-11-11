@@ -1,6 +1,5 @@
 package org.example.demo13213.model.dao;
 
-
 import jakarta.persistence.Entity;
 import lombok.*;
 import lombok.experimental.FieldDefaults;

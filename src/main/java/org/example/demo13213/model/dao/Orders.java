@@ -1,4 +1,59 @@
 package org.example.demo13213.model.dao;
 
+import jakarta.persistence.*;
+import lombok.*;
+import lombok.experimental.FieldDefaults;
+import org.hibernate.annotations.CreationTimestamp;
+
+import java.math.BigDecimal;
+import java.time.OffsetDateTime;
+import java.util.UUID;
+
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+@FieldDefaults(level = AccessLevel.PRIVATE)
+@Entity
+@Table(name = "orders")
 public class Orders {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(nullable = false, updatable = false)
+    UUID id;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false,
+            foreignKey = @ForeignKey(name = "fk_orders_user"))
+    Users user;
+
+    @Column(nullable = false, length = 30)
+    String status;
+
+    @Column(name = "total_items", nullable = false)
+    Integer totalItems = 0;
+
+    @Column(nullable = false, precision = 10, scale = 2)
+    BigDecimal subtotal = BigDecimal.ZERO;
+
+    @Column(name = "discount_total", nullable = false, precision = 10, scale = 2)
+    BigDecimal discountTotal = BigDecimal.ZERO;
+
+    @Column(name = "shipping_fee", nullable = false, precision = 10, scale = 2)
+    BigDecimal shippingFee = BigDecimal.ZERO;
+
+    @Column(name = "grand_total", nullable = false, precision = 10, scale = 2)
+    BigDecimal grandTotal = BigDecimal.ZERO;
+
+    @CreationTimestamp
+    @Column(name = "created_at", nullable = false, updatable = false)
+    OffsetDateTime createdAt;
+
+    @Column(name = "paid_at")
+    OffsetDateTime paidAt;
+
+    @Column(name = "cancelled_at")
+    OffsetDateTime cancelledAt;
 }
