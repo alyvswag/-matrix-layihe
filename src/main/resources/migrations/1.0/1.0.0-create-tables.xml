@@ -13,7 +13,7 @@
             </not>
         </preConditions>
         <createTable tableName="users">
-            <column name="id" type="UUID">
+            <column name="id" type="BIGINT" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="username" type="VARCHAR(255)">
@@ -40,7 +40,7 @@
             </not>
         </preConditions>
         <createTable tableName="brands">
-            <column name="id" type="UUID">
+            <column name="id" type="BIGINT" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="name" type="VARCHAR(255)">
@@ -64,13 +64,13 @@
             </not>
         </preConditions>
         <createTable tableName="categories">
-            <column name="id" type="UUID">
+            <column name="id" type="BIGINT" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="name" type="VARCHAR(255)">
                 <constraints nullable="false"/>
             </column>
-            <column name="parent_id" type="UUID"/>
+            <column name="parent_id" type="BIGINT"/>
             <column name="created_at" type="TIMESTAMPTZ" defaultValueComputed="NOW()">
                 <constraints nullable="false"/>
             </column>
@@ -99,7 +99,7 @@
             </not>
         </preConditions>
         <createTable tableName="products">
-            <column name="id" type="UUID">
+            <column name="id" type="BIGINT" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="name" type="VARCHAR(255)">
@@ -108,8 +108,8 @@
             <column name="short_description" type="VARCHAR(500)"/>
             <column name="description" type="TEXT"/>
 
-            <column name="brand_id" type="UUID"/>
-            <column name="category_id" type="UUID"/>
+            <column name="brand_id" type="BIGINT"/>
+            <column name="category_id" type="BIGINT"/>
 
             <column name="price" type="NUMERIC(10,2)">
                 <constraints nullable="false"/>
@@ -176,7 +176,7 @@
             </not>
         </preConditions>
         <createTable tableName="product_inventory">
-            <column name="product_id" type="UUID">
+            <column name="product_id" type="BIGINT">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="quantity" type="INT" defaultValueNumeric="0">
@@ -207,10 +207,10 @@
             </not>
         </preConditions>
         <createTable tableName="carts">
-            <column name="id" type="UUID">
+            <column name="id" type="BIGINT" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
-            <column name="user_id" type="UUID">
+            <column name="user_id" type="BIGINT">
                 <constraints nullable="false"/>
             </column>
             <column name="created_at" type="TIMESTAMPTZ" defaultValueComputed="NOW()">
@@ -246,13 +246,13 @@
             </not>
         </preConditions>
         <createTable tableName="cart_items">
-            <column name="id" type="UUID">
+            <column name="id" type="BIGINT" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
-            <column name="cart_id" type="UUID">
+            <column name="cart_id" type="BIGINT">
                 <constraints nullable="false"/>
             </column>
-            <column name="product_id" type="UUID">
+            <column name="product_id" type="BIGINT">
                 <constraints nullable="false"/>
             </column>
             <column name="created_at" type="TIMESTAMPTZ" defaultValueComputed="NOW()">
@@ -299,10 +299,10 @@
             </not>
         </preConditions>
         <createTable tableName="orders">
-            <column name="id" type="UUID">
+            <column name="id" type="BIGINT" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
-            <column name="user_id" type="UUID">
+            <column name="user_id" type="BIGINT">
                 <constraints nullable="false"/>
             </column>
             <column name="status" type="VARCHAR(30)">
@@ -352,13 +352,13 @@
             </not>
         </preConditions>
         <createTable tableName="order_items">
-            <column name="id" type="UUID">
+            <column name="id" type="BIGINT" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
-            <column name="order_id" type="UUID">
+            <column name="order_id" type="BIGINT">
                 <constraints nullable="false"/>
             </column>
-            <column name="product_id" type="UUID"/>
+            <column name="product_id" type="BIGINT"/>
             <column name="quantity" type="INT">
                 <constraints nullable="false"/>
             </column>
@@ -411,7 +411,7 @@
             </not>
         </preConditions>
         <createTable tableName="coupons">
-            <column name="id" type="UUID">
+            <column name="id" type="BIGINT" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="name" type="VARCHAR(100)">
@@ -420,7 +420,7 @@
             <column name="discount_value" type="NUMERIC(10,2)">
                 <constraints nullable="false"/>
             </column>
-            <column name="category_id" type="UUID"/>
+            <column name="category_id" type="BIGINT"/>
             <column name="active_days" type="INT"/>
             <column name="is_active" type="BOOLEAN" defaultValueBoolean="true">
                 <constraints nullable="false"/>
@@ -453,13 +453,13 @@
             </not>
         </preConditions>
         <createTable tableName="user_coupons">
-            <column name="id" type="UUID">
+            <column name="id" type="BIGINT" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
-            <column name="user_id" type="UUID">
+            <column name="user_id" type="BIGINT">
                 <constraints nullable="false"/>
             </column>
-            <column name="coupon_id" type="UUID">
+            <column name="coupon_id" type="BIGINT">
                 <constraints nullable="false"/>
             </column>
             <column name="activated_at" type="TIMESTAMPTZ" defaultValueComputed="NOW()">
@@ -471,9 +471,8 @@
             <column name="is_active" type="BOOLEAN" defaultValueBoolean="true">
                 <constraints nullable="false"/>
             </column>
-            <column name="used_order_id" type="UUID"/>
+            <column name="used_order_id" type="BIGINT"/>
             <column name="used_at" type="TIMESTAMPTZ"/>
-
         </createTable>
 
         <addUniqueConstraint
@@ -521,13 +520,13 @@
             </not>
         </preConditions>
         <createTable tableName="reviews">
-            <column name="id" type="UUID">
+            <column name="id" type="BIGINT" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
-            <column name="product_id" type="UUID">
+            <column name="product_id" type="BIGINT">
                 <constraints nullable="false"/>
             </column>
-            <column name="user_id" type="UUID">
+            <column name="user_id" type="BIGINT">
                 <constraints nullable="false"/>
             </column>
             <column name="rating" type="INT">

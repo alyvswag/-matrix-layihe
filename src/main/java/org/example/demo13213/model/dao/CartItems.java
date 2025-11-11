@@ -22,9 +22,9 @@ import java.util.UUID;
 public class CartItems {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(nullable = false, updatable = false)
-    UUID id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    //@Cascade(Cas)//silienecek
+    Long id;
 
     @ManyToOne
     @JoinColumn(name = "cart_id", referencedColumnName = "id", nullable = false,

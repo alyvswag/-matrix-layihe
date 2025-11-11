@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+
+    <changeSet id="1.0.1-32-add-is-active-column-to-users" author="nuray_aghazade">
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="users"/>
+        </preConditions>
+
+        <addColumn tableName="users">
+            <column name="is_active" type="BOOLEAN" defaultValueBoolean="true">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+    </changeSet>
+    <changeSet id="33-drop-parent-id-column-from-categories" author="nuray_aghazade">
+        <!-- Əvvəlcə FK constraint-i silirik -->
+        <dropForeignKeyConstraint
+                baseTableName="categories"
+                constraintName="fk_categories_parent"/>
+
+        <!-- Sonra sütunu tamamilə silirik -->
+        <dropColumn tableName="categories" columnName="parent_id"/>
+    </changeSet>
+
+
+</databaseChangeLog>

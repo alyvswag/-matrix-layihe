@@ -5,6 +5,7 @@ package org.example.demo13213.controller.auth;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.example.demo13213.model.dao.Products;
 import org.example.demo13213.model.dto.request.login.LoginRequestPayload;
 import org.example.demo13213.model.dto.request.login.UserRequestCreate;
 import org.example.demo13213.model.dto.response.base.BaseResponse;
@@ -12,10 +13,13 @@ import org.example.demo13213.model.dto.response.login.LoginResponse;
 
 import org.example.demo13213.service.auth.AuthService;
 
+import org.example.demo13213.service.product.ProductService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/auth")
@@ -53,7 +57,5 @@ public class AuthController {
     public BaseResponse<String> test() {
         return BaseResponse.success("salammm");
     }
-
-
 
 }

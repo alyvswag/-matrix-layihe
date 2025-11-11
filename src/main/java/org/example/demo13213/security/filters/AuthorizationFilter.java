@@ -40,7 +40,7 @@ public class AuthorizationFilter extends OncePerRequestFilter {
         String path = request.getRequestURI();
 
 
-        if (path.equals("/api/v1/auth/register-user") || path.equals("/api/v1/auth/login")) {
+        if ( path.equals("/api/v1/products/search/")) {
             filterChain.doFilter(request, response);
             return;
         }

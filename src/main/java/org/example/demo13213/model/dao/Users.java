@@ -4,6 +4,7 @@ import jakarta.persistence.Entity;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 import jakarta.persistence.*;
+import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -19,7 +20,7 @@ import java.sql.Timestamp;
 public class Users {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    //@Cascade(CascadeType.ALL)//siliencek
+    //@Cascade(Cas)//silienecek
     Long id;
 
     @Column(name = "username" , unique = true)

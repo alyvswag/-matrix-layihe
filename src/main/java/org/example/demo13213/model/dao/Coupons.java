@@ -21,9 +21,9 @@ import java.util.UUID;
 public class Coupons {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(nullable = false, updatable = false)
-    UUID id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    //@Cascade(Cas)//silienecek
+    Long id;
 
     @Column(nullable = false, length = 100)
     String name;

@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
+import java.sql.Timestamp;
 import java.time.OffsetDateTime;
 import java.util.UUID;
 
@@ -20,9 +21,9 @@ import java.util.UUID;
 public class UserCoupons {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(nullable = false, updatable = false)
-    UUID id;
+    Long id;
 
     @ManyToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false,
@@ -49,5 +50,5 @@ public class UserCoupons {
     Orders usedOrder;
 
     @Column(name = "used_at")
-    OffsetDateTime usedAt;
+    Timestamp usedAt;
 }

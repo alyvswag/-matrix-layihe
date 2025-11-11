@@ -23,9 +23,9 @@ import java.util.UUID;
 public class Products {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(nullable = false, updatable = false)
-    UUID id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    //@Cascade(Cas)//silienecek
+    Long id;
 
     @Column(nullable = false, length = 255)
     String name;

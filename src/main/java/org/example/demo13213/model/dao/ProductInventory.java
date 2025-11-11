@@ -19,8 +19,9 @@ import java.util.UUID;
 public class ProductInventory {
 
     @Id
-    @Column(name = "product_id", nullable = false, updatable = false)
-    UUID productId;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    //@Cascade(Cas)//silienecek
+    Long productId;
 
     @MapsId
     @OneToOne

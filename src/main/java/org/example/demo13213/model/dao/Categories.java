@@ -20,16 +20,13 @@ import java.util.UUID;
 public class Categories {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(nullable = false, updatable = false)
-    UUID id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    //@Cascade(Cas)//silienecek
+    Long id;
 
     @Column(nullable = false, length = 255)
     String name;
 
-    @ManyToOne
-    @JoinColumn(name = "parent_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "fk_categories_parent"))
-    Categories parent;
 
     @CreationTimestamp
     @Column(name = "created_at", nullable = false, updatable = false)
