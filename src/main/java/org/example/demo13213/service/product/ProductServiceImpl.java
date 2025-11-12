@@ -72,7 +72,7 @@ public class ProductServiceImpl implements ProductService {
         //user kuponun alinmasi
         List<UserCoupons> coupons = userCouponRepo.findActiveByUserIdForUserCoupon(userPrincipal.getId());
 
-        // 6️⃣ Məhsulun final price-ını hesablayırıq
+        //Məhsulun final price-ını hesablayırıq
         BigDecimal finalPrice = product.getPrice(); // başlanğıc qiymət
         OffsetDateTime now = OffsetDateTime.now();
 

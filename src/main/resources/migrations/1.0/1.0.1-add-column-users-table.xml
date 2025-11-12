@@ -26,6 +26,36 @@
         <!-- Sonra sütunu tamamilə silirik -->
         <dropColumn tableName="categories" columnName="parent_id"/>
     </changeSet>
+    <changeSet id="34-drop-expires-at-column-from-user-coupons" author="nuray_aghazade">
+        <preConditions onFail="MARK_RAN">
+            <columnExists tableName="user_coupons" columnName="expires_at"/>
+        </preConditions>
+
+        <dropColumn tableName="user_coupons" columnName="expires_at"/>
+    </changeSet>
+    <changeSet id="35-drop-used-order-id-column" author="nuray_aghazade">
+        <preConditions onFail="MARK_RAN">
+            <or>
+                <foreignKeyConstraintExists
+                        foreignKeyName="fk_user_coupons_used_order"/>
+                <columnExists
+                        tableName="user_coupons"
+                        columnName="used_order_id"/>
+            </or>
+        </preConditions>
+
+        <!-- Əvvəlcə foreign key constraint silinir -->
+        <dropForeignKeyConstraint
+                baseTableName="user_coupons"
+                constraintName="fk_user_coupons_used_order"/>
+
+        <!-- Daha sonra sütun silinir -->
+        <dropColumn
+                tableName="user_coupons"
+                columnName="used_order_id"/>
+    </changeSet>
+
+
 
 
 </databaseChangeLog>

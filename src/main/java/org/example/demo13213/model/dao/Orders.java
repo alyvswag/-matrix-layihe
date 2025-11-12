@@ -3,6 +3,7 @@ package org.example.demo13213.model.dao;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
+import org.example.demo13213.model.dto.enums.order.OrderStatus;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.math.BigDecimal;
@@ -30,7 +31,7 @@ public class Orders {
     Users user;
 
     @Column(nullable = false, length = 30)
-    String status;
+    OrderStatus status;
 
     @Column(name = "total_items", nullable = false)
     Integer totalItems = 0;

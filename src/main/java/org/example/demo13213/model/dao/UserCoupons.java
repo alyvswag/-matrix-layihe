@@ -38,16 +38,8 @@ public class UserCoupons {
     @Column(name = "activated_at", nullable = false)
     OffsetDateTime activatedAt;
 
-    @Column(name = "expires_at", nullable = false)
-    OffsetDateTime expiresAt;
-
     @Column(name = "is_active", nullable = false)
     Boolean isActive = true;
-
-    @ManyToOne
-    @JoinColumn(name = "used_order_id", referencedColumnName = "id",
-            foreignKey = @ForeignKey(name = "fk_user_coupons_used_order"))
-    Orders usedOrder;
 
     @Column(name = "used_at")
     Timestamp usedAt;
