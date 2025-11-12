@@ -5,7 +5,7 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.example.demo13213.model.dao.Users;
-import org.example.demo13213.security.p.SecurityProperties;
+import org.example.demo13213.security.data.SecurityProperties;
 import org.example.demo13213.utils.PublicPrivateKeyUtils;
 import org.slf4j.Logger;
 import org.springframework.stereotype.Component;

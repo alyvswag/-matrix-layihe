@@ -1,11 +1,13 @@
 package org.example.demo13213.security;
 
+import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 import java.util.Collections;
 
+@Getter
 public class UserPrincipal implements UserDetails {
 
     private Long id;
@@ -26,6 +28,8 @@ public class UserPrincipal implements UserDetails {
         // Hələlik rollar yoxdur, boş siyahı qaytarırıq
         return Collections.emptyList();
     }
+
+
 
     @Override
     public String getPassword() {

@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 public enum ErrorResponseMessages implements ResponseMessages {
     UNEXPECTED("unexpected", "Unexpected error.", HttpStatus.INTERNAL_SERVER_ERROR),
     NOT_FOUND("not_found_%s", "The requested %s model with %s was not found.", HttpStatus.NOT_FOUND),
+    PRODUCT_OUT_OF_STOCK("product_out_of_stock", "The requested product is out of stock or not available in sufficient quantity.", HttpStatus.BAD_REQUEST),
     USERNAME_ALREADY_REGISTERED("username_already_registered", "Username already registered", HttpStatus.CONFLICT),
     NULL_NOT_ALLOWED("null_not_allowed_%s", "The column %s does not allow null values.", HttpStatus.BAD_REQUEST),
     INVALID_TOKEN("invalid_token", "The provided token is no longer valid.", HttpStatus.UNAUTHORIZED),

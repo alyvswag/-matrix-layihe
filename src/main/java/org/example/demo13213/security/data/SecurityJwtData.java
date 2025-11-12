@@ -1,4 +1,4 @@
-package org.example.demo13213.security.p;
+package org.example.demo13213.security.data;
 
 import lombok.AccessLevel;
 import lombok.Data;
