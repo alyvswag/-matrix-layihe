@@ -1,9 +1,6 @@
 package org.example.demo13213.controller.product;
 
 
-
-
-
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -35,8 +32,14 @@ public class ProductController {
     public BaseResponse<List<Products>> search(@PathVariable String searchWord) {
         return BaseResponse.success(productService.searchProduct(searchWord));
     }
+
     @GetMapping("/{id}/details")
     public BaseResponse<ProductResponseDetails> getProductDetails(@PathVariable Long id) {
         return BaseResponse.success(productService.getProductDetails(id));
+    }
+
+    @GetMapping("/bestsellers")
+    public BaseResponse<List<Products>> getBestSellers() {
+        return BaseResponse.success(productService.getBestSellers());
     }
 }

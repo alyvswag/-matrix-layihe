@@ -9,4 +9,7 @@ public interface ProductService {
     List<Products> searchProduct(String productName);
 
     ProductResponseDetails getProductDetails(Long productId);
+
+    List<Products> getBestSellers();
+
 }

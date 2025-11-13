@@ -9,6 +9,7 @@ import org.example.demo13213.exception.BaseException;
 import org.example.demo13213.model.dao.*;
 import org.example.demo13213.model.dto.response.product.ProductResponseDetails;
 import org.example.demo13213.repo.coupon.UserCouponRepo;
+import org.example.demo13213.repo.order.OrderItemRepo;
 import org.example.demo13213.repo.product.ProductInventoryRepo;
 import org.example.demo13213.repo.product.ProductRepo;
 import org.example.demo13213.repo.review.ReviewRepo;
@@ -19,6 +20,7 @@ import org.springframework.stereotype.Service;
 import javax.swing.text.html.Option;
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
@@ -35,7 +37,8 @@ public class ProductServiceImpl implements ProductService {
     final ProductRepo productRepo;
     final ProductInventoryRepo productInventoryRepo;
     final ReviewRepo reviewRepo;
-    final UserCouponRepo  userCouponRepo;
+    final UserCouponRepo userCouponRepo;
+    final OrderItemRepo orderItemRepo;
 
     @Override
     public List<Products> searchProduct(String productName) {
@@ -46,11 +49,11 @@ public class ProductServiceImpl implements ProductService {
     public ProductResponseDetails getProductDetails(Long productId) {
         //producctun tapilmasi
         Products product = productRepo.findByIdForProduct(productId).orElseThrow(
-                ()-> BaseException.notFound("product",productId.toString(),productId)//burani duzelt
+                () -> BaseException.notFound("product", productId.toString(), productId)//burani duzelt
         );
         //stock yoxlanmasi
         ProductInventory productQuantity = productInventoryRepo.findByIdForProductQuantity(productId).orElseThrow(
-                ()-> BaseException.of(PRODUCT_OUT_OF_STOCK)
+                () -> BaseException.of(PRODUCT_OUT_OF_STOCK)
         );
 
         //review tapilmasi
@@ -110,6 +113,32 @@ public class ProductServiceImpl implements ProductService {
         response.setCategory(product.getCategory().getName());
 
         return response;
+    }
+
+    @Override
+    public List<Products> getBestSellers() {
+        List<Object[]> bestSellersRaw = orderItemRepo.findBestSellingProducts();
+
+        List<Long> productIds = bestSellersRaw.stream()
+                .map(obj -> (Long) obj[0])
+                .toList();
+
+        if (productIds.isEmpty()) {
+            return List.of();
+        }
+
+        List<Products> products = productRepo.findAllById(productIds);
+
+        products.sort(Comparator.comparingInt((Products p) -> {
+            Long pid = p.getId();
+            Object[] match = bestSellersRaw.stream()
+                    .filter(obj -> obj[0].equals(pid))
+                    .findFirst()
+                    .orElse(null);
+            return match == null ? 0 : ((Number) match[1]).intValue();
+        }).reversed());
+
+        return products;
     }
 
 }
