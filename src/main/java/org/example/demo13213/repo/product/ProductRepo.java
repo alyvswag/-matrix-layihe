@@ -22,4 +22,6 @@ public interface ProductRepo extends JpaRepository<Products, Long> {
         @Query("Select p From Products p WHERE p.id=:id AND p.isActive=TRUE ")
         Optional<Products> findByIdForProduct(@Param("id") Long id);
 
+        @Query("Select p From Products p WHERE p.brand.id=:brandId AND p.isActive=TRUE ")
+        List<Products> findByBrandId(Long brandId);
 }

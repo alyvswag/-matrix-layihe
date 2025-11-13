@@ -1,7 +1,0 @@
-.gradle
-.git
-.gitignore
-node_modules
-build
-target
-out
