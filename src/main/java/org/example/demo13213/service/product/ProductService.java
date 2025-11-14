@@ -1,6 +1,7 @@
 package org.example.demo13213.service.product;
 
 import org.example.demo13213.model.dao.Products;
+import org.example.demo13213.model.dto.request.product.ProductFilterRequest;
 import org.example.demo13213.model.dto.response.product.ProductResponseDetails;
 
 import java.util.List;
@@ -11,5 +12,7 @@ public interface ProductService {
     ProductResponseDetails getProductDetails(Long productId);
 
     List<Products> getBestSellers();
+
+    List<Products> filter(ProductFilterRequest productFilterRequest);
 
 }

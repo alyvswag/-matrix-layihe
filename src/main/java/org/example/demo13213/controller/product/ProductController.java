@@ -7,6 +7,7 @@ import lombok.experimental.FieldDefaults;
 import org.example.demo13213.model.dao.Products;
 import org.example.demo13213.model.dto.request.login.LoginRequestPayload;
 import org.example.demo13213.model.dto.request.login.UserRequestCreate;
+import org.example.demo13213.model.dto.request.product.ProductFilterRequest;
 import org.example.demo13213.model.dto.response.base.BaseResponse;
 import org.example.demo13213.model.dto.response.login.LoginResponse;
 
@@ -42,4 +43,10 @@ public class ProductController {
     public BaseResponse<List<Products>> getBestSellers() {
         return BaseResponse.success(productService.getBestSellers());
     }
+    @PostMapping("/filter-products")
+    public BaseResponse<List<Products>> filterProducts(@RequestBody ProductFilterRequest productFilterRequest) {
+        return BaseResponse.success(productService.filter(productFilterRequest));
+    }
+
+
 }

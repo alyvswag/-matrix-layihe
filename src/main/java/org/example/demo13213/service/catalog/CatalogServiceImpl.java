@@ -21,6 +21,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @Slf4j
 public class CatalogServiceImpl implements CatalogService {
+
     final ProductRepo productRepo;
 
 
@@ -37,15 +38,20 @@ public class CatalogServiceImpl implements CatalogService {
     @Override
     public HomeCatalogResponse getHomeCatalog(int page, int size) {
 
-        Pageable pageable = PageRequest.of(page, size, Sort.by("createdAt").descending());
+        // 1) New arrivals üçün: createdAt-a görə sort lazımdır
+        Pageable newArrivalsPageable =
+                PageRequest.of(page, size, Sort.by("createdAt").descending());
 
-        Page<Products> newArrivals = productRepo.findNewArrivals(pageable);
-        Page<Products> discounted = productRepo.findDiscounted(pageable);
-        Page<Products> bestSellersPage = productRepo.findBestSellers(pageable);
+        Page<Products> newArrivals = productRepo.findNewArrivals(newArrivalsPageable);
+
+        // 2) Best sellers üçün: sort artıq JPQL-in içində var, əlavə sort lazım deyil
+        Pageable bestSellersPageable =
+                PageRequest.of(page, size); // Sort YOXDUR
+
+        Page<Products> bestSellersPage = productRepo.findBestSellers(bestSellersPageable);
 
         return HomeCatalogResponse.builder()
                 .newArrivals(newArrivals.getContent())
-                .discounted(discounted.getContent())
                 .bestSellers(bestSellersPage.getContent())
                 .build();
     }

@@ -16,5 +16,4 @@ public class HomeCatalogResponse {
 
     List<Products> newArrivals;
     List<Products> bestSellers;
-    List<Products> discounted;
 }

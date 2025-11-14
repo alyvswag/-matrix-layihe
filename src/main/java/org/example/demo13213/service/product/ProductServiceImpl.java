@@ -1,5 +1,11 @@
 package org.example.demo13213.service.product;
 
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.TypedQuery;
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Predicate;
+import jakarta.persistence.criteria.Root;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -7,6 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.catalina.User;
 import org.example.demo13213.exception.BaseException;
 import org.example.demo13213.model.dao.*;
+import org.example.demo13213.model.dto.request.product.ProductFilterRequest;
 import org.example.demo13213.model.dto.response.product.ProductResponseDetails;
 import org.example.demo13213.repo.coupon.UserCouponRepo;
 import org.example.demo13213.repo.order.OrderItemRepo;
@@ -20,6 +27,7 @@ import org.springframework.stereotype.Service;
 import javax.swing.text.html.Option;
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
@@ -39,6 +47,7 @@ public class ProductServiceImpl implements ProductService {
     final ReviewRepo reviewRepo;
     final UserCouponRepo userCouponRepo;
     final OrderItemRepo orderItemRepo;
+    final EntityManager em;
 
     @Override
     public List<Products> searchProduct(String productName) {
@@ -140,5 +149,75 @@ public class ProductServiceImpl implements ProductService {
 
         return products;
     }
+
+    @Override
+    public List<Products> filter(ProductFilterRequest productFilterRequest) {
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<Products> query = cb.createQuery(Products.class);
+        Root<Products> root = query.from(Products.class);
+
+        List<Predicate> predicates = new ArrayList<>();
+        predicates.add(cb.isTrue(root.get("isActive")));
+
+        if (productFilterRequest.getMinPrice() != null) {
+            predicates.add(
+                    cb.greaterThanOrEqualTo(
+                            root.get("price"),
+                            productFilterRequest.getMinPrice()
+                    )
+            );
+        }
+        if (productFilterRequest.getMaxPrice() != null) {
+            predicates.add(
+                    cb.lessThanOrEqualTo(
+                            root.get("price"),
+                            productFilterRequest.getMaxPrice()
+                    )
+            );
+        }
+
+        if (productFilterRequest.getIsVegan() != null) {
+            predicates.add(
+                    cb.equal(
+                            root.get("isVegan"),
+                            productFilterRequest.getIsVegan()
+                    )
+            );
+        }
+        if (productFilterRequest.getIsForSensitiveSkin() != null) {
+            predicates.add(
+                    cb.equal(
+                            root.get("isForSensitiveSkin"),
+                            productFilterRequest.getIsForSensitiveSkin()
+                    )
+            );
+        }
+
+        if (productFilterRequest.getSkinType() != null) {
+            predicates.add(
+                    cb.equal(
+                            root.get("skinType"),
+                            productFilterRequest.getSkinType()
+                    )
+            );
+        }
+        if (productFilterRequest.getConcernType() != null) {
+            predicates.add(
+                    cb.equal(
+                            root.get("concernType"),
+                            productFilterRequest.getConcernType()
+                    )
+            );
+        }
+        //list predicate
+        //mehdudiyyetler
+
+        // WHERE
+        query.where(cb.and(predicates.toArray(new Predicate[0])));
+
+        TypedQuery<Products> typedQuery = em.createQuery(query);
+        return typedQuery.getResultList();
+    }
+
 
 }

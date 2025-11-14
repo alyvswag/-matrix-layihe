@@ -35,6 +35,8 @@ public class CatalogController {
     public BaseResponse<List<Products>> findBrandWithProducts(@PathVariable Long brandId) {
         return BaseResponse.success(catalogService.findBrandsWithProducts(brandId));
     }
+
+    // default value vermek ucun paramlardan istifade eledim
     @GetMapping("/home")
     public BaseResponse<HomeCatalogResponse> getHomeCatalog(
             @RequestParam(defaultValue = "0") int page,
@@ -42,4 +44,6 @@ public class CatalogController {
     ) {
         return BaseResponse.success(catalogService.getHomeCatalog(page, size));
     }
+
+
 }

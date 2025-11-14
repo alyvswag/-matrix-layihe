@@ -30,7 +30,7 @@ public class Orders {
             foreignKey = @ForeignKey(name = "fk_orders_user"))
     Users user;
 
-    @Column(nullable = false, length = 30)
+    @Enumerated(EnumType.STRING)
     OrderStatus status;
 
     @Column(name = "total_items", nullable = false)

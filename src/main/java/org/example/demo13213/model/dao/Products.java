@@ -3,6 +3,8 @@ package org.example.demo13213.model.dao;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
+import org.example.demo13213.model.dto.enums.products.ConcernType;
+import org.example.demo13213.model.dto.enums.products.SkinType;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -56,11 +58,11 @@ public class Products {
     @Column(nullable = false)
     Boolean isForSensitiveSkin = false;
 
-    @Column(length = 30)
-    String skinType;
+    @Enumerated(EnumType.STRING)
+    SkinType skinType;
 
-    @Column(length = 30)
-    String concernType;
+    @Enumerated(EnumType.STRING)
+    ConcernType concernType;
 
     @CreationTimestamp
     @Column(name = "created_at", nullable = false, updatable = false)

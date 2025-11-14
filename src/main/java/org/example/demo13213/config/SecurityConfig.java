@@ -60,7 +60,9 @@ public class SecurityConfig {
                                 "/api/v1/auth/refresh-token/**",
                                 "/api/v1/products/search/**",
                                 "/api/v1/products/bestsellers",
-                                "/api/v1/catalog/brands-with-products/**"
+                                "/api/v1/catalog/brands-with-products/**",
+                                "/api/v1/catalog/home",
+                                "/api/v1/products/filter-products"
                         ).permitAll()
                         .anyRequest().authenticated()
                 )
