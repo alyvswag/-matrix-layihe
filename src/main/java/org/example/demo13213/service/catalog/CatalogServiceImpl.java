@@ -27,13 +27,16 @@ public class CatalogServiceImpl implements CatalogService {
 
     @Override
     public List<Products> findBrandsWithProducts(Long brandId) {
+        log.info("➡️ Request received: findBrandsWithProducts brandId={}", brandId);
         List<Products> products = productRepo.findByBrandId(brandId);
 
         if (products.isEmpty()) {
+            log.warn("⚠️ No products found for brandId={}", brandId);
             throw BaseException.notFound("brand", "id", brandId.toString());
         }
+        log.info("✅ Found {} products for brandId={}", products.size(), brandId);
         return products;
-    }
+    }//men yazdim sende yaz
 
     @Override
     public HomeCatalogResponse getHomeCatalog(int page, int size) {
