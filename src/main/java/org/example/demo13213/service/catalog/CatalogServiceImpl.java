@@ -6,7 +6,12 @@ import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.example.demo13213.exception.BaseException;
 import org.example.demo13213.model.dao.Products;
+import org.example.demo13213.model.dto.response.catalog.HomeCatalogResponse;
 import org.example.demo13213.repo.product.ProductRepo;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,23 +21,32 @@ import java.util.List;
 @RequiredArgsConstructor
 @Slf4j
 public class CatalogServiceImpl implements CatalogService {
-   final ProductRepo productRepo;
-
-
-
-
+    final ProductRepo productRepo;
 
 
     @Override
     public List<Products> findBrandsWithProducts(Long brandId) {
-        log.info("Searching active products for brandId: {}", brandId);
-
         List<Products> products = productRepo.findByBrandId(brandId);
 
         if (products.isEmpty()) {
             throw BaseException.notFound("brand", "id", brandId.toString());
         }
-
         return products;
+    }
+
+    @Override
+    public HomeCatalogResponse getHomeCatalog(int page, int size) {
+
+        Pageable pageable = PageRequest.of(page, size, Sort.by("createdAt").descending());
+
+        Page<Products> newArrivals = productRepo.findNewArrivals(pageable);
+        Page<Products> discounted = productRepo.findDiscounted(pageable);
+        Page<Products> bestSellersPage = productRepo.findBestSellers(pageable);
+
+        return HomeCatalogResponse.builder()
+                .newArrivals(newArrivals.getContent())
+                .discounted(discounted.getContent())
+                .bestSellers(bestSellersPage.getContent())
+                .build();
     }
 }

@@ -9,6 +9,7 @@ import org.example.demo13213.model.dao.Products;
 import org.example.demo13213.model.dto.request.login.LoginRequestPayload;
 import org.example.demo13213.model.dto.request.login.UserRequestCreate;
 import org.example.demo13213.model.dto.response.base.BaseResponse;
+import org.example.demo13213.model.dto.response.catalog.HomeCatalogResponse;
 import org.example.demo13213.model.dto.response.login.LoginResponse;
 
 
@@ -33,5 +34,12 @@ public class CatalogController {
     @GetMapping("/brands-with-products/{brandId}")
     public BaseResponse<List<Products>> findBrandWithProducts(@PathVariable Long brandId) {
         return BaseResponse.success(catalogService.findBrandsWithProducts(brandId));
+    }
+    @GetMapping("/home")
+    public BaseResponse<HomeCatalogResponse> getHomeCatalog(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size
+    ) {
+        return BaseResponse.success(catalogService.getHomeCatalog(page, size));
     }
 }
