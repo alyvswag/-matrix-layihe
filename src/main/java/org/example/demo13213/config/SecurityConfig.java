@@ -21,7 +21,8 @@ import org.example.demo13213.security.filters.AuthorizationFilter;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 
-import static org.example.demo13213.constant.SecurityPathConstants.TEST_PERMIT_ALL;
+import static org.example.demo13213.constant.SecurityPathConstants.AUTHENTICATED;
+import static org.example.demo13213.constant.SecurityPathConstants.PERMIT_ALL;
 
 
 @Configuration
@@ -53,18 +54,8 @@ public class SecurityConfig {
         http
                 .authorizeHttpRequests(request -> request
                         // Yalnız bu iki endpoint açıq olsun
-                        .requestMatchers(
-                                "/api/v1/auth/register-user",
-                                "/api/v1/auth/login",
-                                "/api/v1/auth/no-auth",
-                                "/api/v1/auth/refresh-token/**",
-                                "/api/v1/products/search/**",
-                                "/api/v1/products/bestsellers",
-                                "/api/v1/catalog/brands-with-products/**",
-                                "/api/v1/catalog/home",
-                                "/api/v1/products/filter-products"
-                        ).permitAll()
-                        .anyRequest().authenticated()
+                        .requestMatchers(PERMIT_ALL).permitAll()
+                        .requestMatchers(AUTHENTICATED).authenticated()
                 )
 //                .authorizeHttpRequests(request -> request
 //                        .anyRequest().permitAll()  // Hər şey açıqdır

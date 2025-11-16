@@ -1,7 +1,15 @@
 package org.example.demo13213.service.cart;
 
-import org.example.demo13213.model.dto.response.cart.CartResponse;
+import org.example.demo13213.model.dao.CartItems;
+import org.example.demo13213.model.dto.response.cart.ProductCouponResponse;
+
+import java.util.List;
 
 public interface CartService {
-    CartResponse getUserCart();
+    List<CartItems> getUserCart();
+
+    void addCart(Long productId);
+
+   //todo: void removeCart(Long productId);
+   List<ProductCouponResponse> applyCoupon(String couponCode);
 }

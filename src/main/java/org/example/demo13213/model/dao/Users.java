@@ -1,5 +1,6 @@
 package org.example.demo13213.model.dao;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Entity;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -28,6 +29,7 @@ public class Users {
     @Column(name = "full_name")
     String fullName;
     @Column(name = "password")
+    @JsonIgnore
     String password;
     @Column(name = "is_active")
     Boolean isActive;

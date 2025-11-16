@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.example.demo13213.model.dao.Products;
 
 import java.math.BigDecimal;
 
@@ -11,9 +12,8 @@ import java.math.BigDecimal;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class CartItemResponse {
-    Long productId;
-    String productName;
-    BigDecimal price;
-    Integer quantity;
+public class ProductCouponResponse {
+    Products p;
+    BigDecimal discValue;
+    BigDecimal finalPrice;
 }

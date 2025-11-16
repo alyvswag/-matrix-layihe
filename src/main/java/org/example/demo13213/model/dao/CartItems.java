@@ -43,5 +43,7 @@ public class CartItems {
     @UpdateTimestamp
     @Column(name = "updated_at", nullable = false)
     OffsetDateTime updatedAt;
+
+
 }
 

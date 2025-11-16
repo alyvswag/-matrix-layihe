@@ -8,15 +8,16 @@ import lombok.experimental.FieldDefaults;
 
 import lombok.extern.slf4j.Slf4j;
 import org.example.demo13213.exception.BaseException;
+import org.example.demo13213.model.dao.Carts;
 import org.example.demo13213.model.dao.Users;
 import org.example.demo13213.model.dto.request.login.LoginRequestPayload;
 import org.example.demo13213.model.dto.request.login.UserRequestCreate;
 import org.example.demo13213.model.dto.response.login.LoginResponse;
+import org.example.demo13213.repo.cart.CartRepo;
 import org.example.demo13213.repo.user.UserRepo;
 import org.example.demo13213.security.jwt.TokenProvider;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -38,13 +39,13 @@ public class AuthServiceImpl  implements AuthService{
 
     final AuthenticationManager authenticationManager;
     final UserRepo userRepo;
+    final CartRepo cartRepo;
     final PasswordEncoder passwordEncoder;
     final TokenProvider tokenProvider;
     final UserDetailsService userDetailsService;
 
     @Override
     public LoginResponse registerUser(UserRequestCreate userRequestCreate) {
-        log.info("register api include ");
         throwIf(
                 //1ci hisse checker
                 () -> userRepo.findUserByUsername(userRequestCreate.getUsername()).isPresent(),//optional<user1>.is
@@ -52,14 +53,16 @@ public class AuthServiceImpl  implements AuthService{
                 BaseException.of(USERNAME_ALREADY_REGISTERED)
         );
         //mapper islemedi manual mapping etdik
-        log.info("istifadeci bazada yoxdu yeni istifadeci oldugun tesdfiqledik");
         Users users = new Users();
         users.setUsername(userRequestCreate.getUsername());
         users.setPassword(passwordEncoder.encode(userRequestCreate.getPassword()));
         users.setFullName(userRequestCreate.getFullName());
         users.setIsActive(true);
         userRepo.save(users);
-
+        //todo:  mutleq user yaradan kimi carts yarat
+        Carts carts  = new Carts();
+        carts.setUser(users);
+        cartRepo.save(carts);
         return prepareLoginResponse(userRequestCreate.getUsername());
     }
 
