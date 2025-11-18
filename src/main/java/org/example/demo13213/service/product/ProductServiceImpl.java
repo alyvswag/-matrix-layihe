@@ -51,22 +51,39 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public List<Products> searchProduct(String productName) {
-        return productRepo.searchProductsByName(productName);
+        log.info("Searching products by name: {}", productName);
+
+        List<Products> products = productRepo.searchProductsByName(productName);
+
+        log.debug("Found {} products matching '{}'", products.size(), productName);
+
+        return products;
     }
 
     @Override
     public ProductResponseDetails getProductDetails(Long productId) {
         //producctun tapilmasi
-        Products product = productRepo.findByIdForProduct(productId).orElseThrow(
-                () -> BaseException.notFound("product", productId.toString(), productId)//burani duzelt
-        );
+        log.info("Retrieving product details for id={}", productId);
+
+        Products product = productRepo.findByIdForProduct(productId).orElseThrow(() -> {
+            log.error("Product not found with id={}", productId);
+            return BaseException.notFound("product", productId.toString(), productId);
+        });
+
+        log.debug("Product found: {}", product.getName());
+
         //stock yoxlanmasi
-        ProductInventory productQuantity = productInventoryRepo.findByIdForProductQuantity(productId).orElseThrow(
-                () -> BaseException.of(PRODUCT_OUT_OF_STOCK)
-        );
+        ProductInventory productQuantity = productInventoryRepo.findByIdForProductQuantity(productId).orElseThrow(() -> {
+            log.warn("Product id={} is out of stock", productId);
+            return BaseException.of(PRODUCT_OUT_OF_STOCK);
+        });
+
+        log.debug("Product stock quantity for id={} is {}", productId, productQuantity.getQuantity());
 
         //review tapilmasi
         List<Reviews> reviews = reviewRepo.findByProductIdForReview(productId);
+        log.debug("Found {} reviews for product {}", reviews.size(), productId);
+
         //ortalama reytinq cixarilmasi
         double avgRating = 0;
         if (!reviews.isEmpty()) {
@@ -76,13 +93,19 @@ public class ProductServiceImpl implements ProductService {
                     .orElse(0);
         }
 
+        log.debug("Average rating for product {} is {}", productId, avgRating);
 
         //istifaceinintaninmas
         UserPrincipal userPrincipal = (UserPrincipal) SecurityContextHolder.getContext()
                 .getAuthentication()
                 .getPrincipal();
+
+        log.trace("Authenticated user id={} for productDetails request", userPrincipal.getId());
+
         //user kuponun alinmasi
         List<UserCoupons> coupons = userCouponRepo.findActiveByUserIdForUserCoupon(userPrincipal.getId());
+
+        log.debug("User {} has {} active coupons", userPrincipal.getId(), coupons.size());
 
         //Məhsulun final price-ını hesablayırıq
         BigDecimal finalPrice = product.getPrice(); // başlanğıc qiymət

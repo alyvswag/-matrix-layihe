@@ -43,38 +43,73 @@ public class CartServiceImpl implements CartService {
         UserPrincipal user = (UserPrincipal) SecurityContextHolder.getContext()
                 .getAuthentication()
                 .getPrincipal();
-        return cartItemRepo.findByUserIdForCartItem(user.getId());
 
+        log.info("➡ Fetching cart items for userId={}", user.getId());
+
+        List<CartItems> items = cartItemRepo.findByUserIdForCartItem(user.getId());
+
+        log.info("✔ Cart items fetched successfully. count={}", items.size());
+
+        return items;
     }
+
 
     @Override
     public void addCart(Long productId) {
-        Products product = productRepo.findByIdForProduct(productId).orElseThrow(
-                () -> BaseException.notFound("product", productId.toString(), productId)//burani duzelt
-        );
+
+        log.info("➡ Add to cart request received. productId={}", productId);
+
+        Products product = productRepo.findByIdForProduct(productId).orElseThrow(() -> {
+            log.error("❌ Product not found. productId={}", productId);
+            return BaseException.notFound("product", productId.toString(), productId);
+        });
+
+        log.debug("✔ Product found. id={}, name={}", product.getId(), product.getName());
+
         UserPrincipal user = (UserPrincipal) SecurityContextHolder.getContext()
                 .getAuthentication()
                 .getPrincipal();
 
+        log.debug("➡ Fetching cart for userId={}", user.getId());
+
         Carts cart = cartRepo.findByUserIdForCarts(user.getId())
-                .orElseThrow(() -> BaseException.notFound("cart", user.getId().toString(), "user"));
+                .orElseThrow(() -> {
+                    log.error("❌ Cart not found for userId={}", user.getId());
+                    return BaseException.notFound("cart", user.getId().toString(), "user");
+                });
+
+        log.debug("✔ Cart found. cartId={}", cart.getId());
+
         CartItems ci = new CartItems();
         ci.setProduct(product);
         ci.setCart(cart);
         cartItemRepo.save(ci);
+
+        log.info("✔ Product added to cart successfully. cartId={}, productId={}", cart.getId(), productId);
     }
 
     @Override
     public List<ProductCouponResponse> applyCoupon(String couponCode) {
 
+        log.info("➡ Apply coupon request received. couponCode={}", couponCode);
+
         Coupons coupon = couponRepo.findCoupons(couponCode, true)
-                .orElseThrow(() -> BaseException.notFound("coupon", couponCode, "coupon"));
+                .orElseThrow(() -> {
+                    log.error("❌ Coupon not found or inactive. code={}", couponCode);
+                    return BaseException.notFound("coupon", couponCode, "coupon");
+                });
+
+        log.debug("✔ Coupon loaded. id={}, discount={}", coupon.getId(), coupon.getDiscountValue());
 
         List<CartItems> cartItems = getUserCart();
+
+        log.debug("➡ Cart items loaded for coupon apply. count={}", cartItems.size());
 
         Long couponCategoryId = coupon.getCategory() != null
                 ? coupon.getCategory().getId()
                 : null;
+
+        log.debug("➡ Coupon category = {}", couponCategoryId);
 
         List<ProductCouponResponse> result = cartItems.stream()
                 .filter(ci -> {
@@ -86,6 +121,14 @@ public class CartServiceImpl implements CartService {
                             ci.getProduct().getCategory().getId(),
                             couponCategoryId
                     );
+
+                    log.trace("Checking productId={} matches couponCategoryId={} -> {}",
+                            ci.getProduct().getId(),
+                            couponCategoryId,
+                            match
+                    );
+
+                    return match;
                 })
                 .map(ci -> {
                     Products p = ci.getProduct();
@@ -100,6 +143,9 @@ public class CartServiceImpl implements CartService {
                         finalPrice = BigDecimal.ZERO;
                     }
 
+                    log.debug("Calculated price for productId={} : original={}, discount={}, final={}",
+                            p.getId(), price, discount, finalPrice);
+
                     return ProductCouponResponse.builder()
                             .p(p)
                             .discValue(discount)
@@ -108,13 +154,13 @@ public class CartServiceImpl implements CartService {
                 })
                 .toList();
 
-        // 🔥 Əsas hissə — uyğun məhsul tapılmayıbsa exception
         if (result.isEmpty()) {
+            log.error("❌ Coupon not applicable. code={}", couponCode);
             throw BaseException.of(COUPON_NOT_APPLICABLE);
         }
+
+        log.info("✔ Coupon applied successfully. couponCode={}, affectedProducts={}", couponCode, result.size());
+
         return result;
     }
-
-
-
 }
