@@ -36,7 +36,7 @@ public class TokenProvider implements TokenService<Users, Claims> {
     }
 
     @Override
-    public Claims read(String token) {
+    public Claims read(String token) { // access yoxsa refresh ikisinde eliyir
         return Jwts.parserBuilder()
                 .setSigningKey(PublicPrivateKeyUtils.getPublicKey())
                 .build()

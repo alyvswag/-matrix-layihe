@@ -122,13 +122,6 @@ public class CartServiceImpl implements CartService {
                             couponCategoryId
                     );
 
-                    log.trace("Checking productId={} matches couponCategoryId={} -> {}",
-                            ci.getProduct().getId(),
-                            couponCategoryId,
-                            match
-                    );
-
-                    return match;
                 })
                 .map(ci -> {
                     Products p = ci.getProduct();

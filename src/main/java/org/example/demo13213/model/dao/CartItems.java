@@ -6,6 +6,7 @@ import lombok.experimental.FieldDefaults;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
+import java.math.BigDecimal;
 import java.time.OffsetDateTime;
 import java.util.UUID;
 
@@ -35,6 +36,9 @@ public class CartItems {
     @JoinColumn(name = "product_id", referencedColumnName = "id", nullable = false,
             foreignKey = @ForeignKey(name = "fk_cart_items_product"))
     Products product;
+
+    @Column(name = "quantity", nullable = false)
+    BigDecimal quantity;
 
     @CreationTimestamp
     @Column(name = "created_at", nullable = false, updatable = false)

@@ -54,6 +54,18 @@
                 tableName="user_coupons"
                 columnName="used_order_id"/>
     </changeSet>
+    <changeSet id="36-add-quantity-to-cart-items" author="nuray_aghazade">
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="cart_items"/>
+        </preConditions>
+
+        <addColumn tableName="cart_items">
+            <column name="quantity" type="BIGINT" defaultValueNumeric="1">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+    </changeSet>
+
 
 
 
