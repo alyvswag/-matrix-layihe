@@ -38,7 +38,7 @@ public class CartItems {
     Products product;
 
     @Column(name = "quantity", nullable = false)
-    BigDecimal quantity;
+    Integer quantity;
 
     @CreationTimestamp
     @Column(name = "created_at", nullable = false, updatable = false)

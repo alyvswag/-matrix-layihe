@@ -8,11 +8,9 @@ import org.example.demo13213.exception.BaseException;
 import org.example.demo13213.model.dao.*;
 import org.example.demo13213.model.dto.enums.order.OrderStatus;
 import org.example.demo13213.repo.cart.CartItemRepo;
-import org.example.demo13213.repo.inventory.ProductInventoryRepo;
-import org.example.demo13213.repo.order.OrderItemRepo;
-import org.example.demo13213.repo.order.OrderItemsRepo;
-import org.example.demo13213.repo.order.OrderRepo;
 import org.example.demo13213.repo.product.ProductInventoryRepo;
+import org.example.demo13213.repo.order.OrderItemRepo;
+import org.example.demo13213.repo.order.OrderRepo;
 import org.example.demo13213.repo.user.UserRepo;
 import org.example.demo13213.security.UserPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -48,7 +46,7 @@ public class OrderServiceImpl implements OrderService {
         // 2) User-in səbətindəki məhsulları tap
         List<CartItems> cartItems = cartItemRepo.findByUserIdForCartItem(user.getId());
         if (cartItems.isEmpty()) {
-            throw BaseException.of(CART_EMPTY);
+            throw BaseException.of(CART_EMPTY);//exception atdiq
         }
 
         // 3) User entity-ni tap
@@ -65,6 +63,7 @@ public class OrderServiceImpl implements OrderService {
 
         // şimdilik shipping fix 5 AZN kimi
         order.setShippingFee(BigDecimal.valueOf(5));
+        orderRepo.save(order);
 
         int totalItems = 0;
         BigDecimal subtotal = BigDecimal.ZERO;
@@ -75,7 +74,7 @@ public class OrderServiceImpl implements OrderService {
 
             // quantity field-i CartItems entity-nə əlavə etdiyini fərz edirəm:
             // private Integer quantity;
-            BigDecimal requestedQty = cartItem.getQuantity();
+            Integer requestedQty = cartItem.getQuantity();
 
             // 5.1) Stoku yoxla
             ProductInventory inventory = productInventoryRepo.findById(product.getId())
