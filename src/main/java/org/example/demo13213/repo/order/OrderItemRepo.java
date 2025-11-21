@@ -18,5 +18,8 @@ public interface OrderItemRepo extends JpaRepository<OrderItems, Long> {
         ORDER BY totalSold DESC
     """)
     List<Object[]> findBestSellingProducts();
+
+    @Query("select oi from OrderItems  oi where oi.order.id=:orderId")
+    List<OrderItems> findByOrderItemForOrderId(@Param("orderId") Long orderId);
 }
 

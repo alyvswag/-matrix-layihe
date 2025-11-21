@@ -18,10 +18,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
-import static org.example.demo13213.model.dto.enums.response.ErrorResponseMessages.CART_EMPTY;
-import static org.example.demo13213.model.dto.enums.response.ErrorResponseMessages.PRODUCT_OUT_OF_STOCK;
+import static org.example.demo13213.model.dto.enums.order.OrderStatus.CANCELLED;
+import static org.example.demo13213.model.dto.enums.order.OrderStatus.PAID;
+import static org.example.demo13213.model.dto.enums.response.ErrorResponseMessages.*;
 
 @Service
 @FieldDefaults(level = AccessLevel.PRIVATE)
@@ -130,5 +133,65 @@ public class OrderServiceImpl implements OrderService {
         cartItemRepo.deleteAll(cartItems);
 
         return order;
+    }
+
+    @Override
+    public void confirmPayment(Long id) {
+        Orders order = orderRepo.findByIdForOrders(id)
+                .orElseThrow(() -> {
+            log.error("❌ Order not found. orderId={}", id);
+            return BaseException.notFound("orders", id.toString(), id);
+        });
+        order.setStatus(PAID);
+        orderRepo.save(order);
+        //orderitem cedvelinde orderid ye uygun olan columnlari temizlemeliyik
+    }
+
+    @Override
+    public void cancelPayment(Long id) {
+        Orders order = orderRepo.findByIdForOrders(id)
+                .orElseThrow(() -> {
+                    log.error("❌ Order not found. orderId={}", id);
+                    return BaseException.notFound("orders", id.toString(), id);
+                });
+        order.setStatus(CANCELLED);
+        //indi ise product inventoryden mehsulun sayi cixilir
+        //ilk once List orderitemsden order id ye uygun olan order itemslari getirirem
+        //sora for dovru qurub hemin for dovrunde sira sira
+        List<OrderItems> orderItems = orderItemsRepo.findByOrderItemForOrderId(id);
+        if (orderItems.isEmpty()) {
+            throw BaseException.of(ORDER_EMPTY);//exception atdiq
+        }
+        for (OrderItems orderItem : orderItems) {
+            ProductInventory inventory = productInventoryRepo.findById(orderItem.getProduct().getId())
+                    .orElseThrow(() -> {
+                        return BaseException.notFound(ProductInventory.class.getSimpleName(),
+                                "productId", String.valueOf(orderItem.getProduct().getId()));
+                    });
+            inventory.setQuantity(inventory.getQuantity()+orderItem.getQuantity());
+            productInventoryRepo.save(inventory);
+        }
+        orderRepo.save(order);
+    }
+
+    @Override
+    public List<OrderItems> myOrders() {
+        // 1) Aktiv user-i götür
+        UserPrincipal user = (UserPrincipal) SecurityContextHolder.getContext()
+                .getAuthentication()
+                .getPrincipal();
+
+        Users u = userRepo.findUserByUsername(user.getUsername())
+                .orElseThrow(() -> {
+                    log.error("❌ User not found: username={}", user.getUsername());
+                    return BaseException.notFound(Users.class.getSimpleName(), "username", user.getUsername());
+                });
+        List<Orders> orders = orderRepo.findOrdersByUserId(u.getId());
+        List<OrderItems> orderItems = new ArrayList<OrderItems>();
+        for(Orders order : orders) {
+            List<OrderItems> oi = orderItemsRepo.findByOrderItemForOrderId(order.getId());
+            orderItems.addAll(oi);
+        }
+        return orderItems;
     }
 }
