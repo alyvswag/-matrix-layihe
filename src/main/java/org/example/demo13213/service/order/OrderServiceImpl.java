@@ -64,7 +64,7 @@ public class OrderServiceImpl implements OrderService {
         order.setUser(u);
         order.setStatus(OrderStatus.PENDING);
 
-        // şimdilik shipping fix 5 AZN kimi
+        //  shipping fix 5 AZN kimi
         order.setShippingFee(BigDecimal.valueOf(5));
         orderRepo.save(order);
 
@@ -130,6 +130,7 @@ public class OrderServiceImpl implements OrderService {
         orderRepo.save(order);
 
         // 7) Səbəti təmizlə
+        //todo: sebebtin temizlenmemesi ucun asagidaki setri commente at
         cartItemRepo.deleteAll(cartItems);
 
         return order;
@@ -194,4 +195,5 @@ public class OrderServiceImpl implements OrderService {
         }
         return orderItems;
     }
+
 }

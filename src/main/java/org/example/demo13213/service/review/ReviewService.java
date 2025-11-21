@@ -1,0 +1,15 @@
+package org.example.demo13213.service.review;
+
+import org.example.demo13213.model.dao.Reviews;
+import org.example.demo13213.model.dto.request.review.ReviewRequestCreate;
+import org.example.demo13213.model.dto.request.review.ReviewRequestUpdate;
+
+import java.util.List;
+
+public interface ReviewService {
+    void addReview(ReviewRequestCreate requestCreate);
+    List<Reviews> getReviews(Long productId);
+    void updateRatingAndReview(ReviewRequestUpdate ratAndRevRequestUpdate);
+    void deleteRatingAndReview(Long id);
+    //RatingResponse getAverageRating(Long bookId);
+}

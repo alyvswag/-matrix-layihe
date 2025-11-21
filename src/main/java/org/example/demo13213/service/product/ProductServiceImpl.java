@@ -54,7 +54,7 @@ public class ProductServiceImpl implements ProductService {
         log.info("Searching products by name: {}", productName);
 
         List<Products> products = productRepo.searchProductsByName(productName);
-
+        checkInventory(products);
         log.debug("Found {} products matching '{}'", products.size(), productName);
 
         return products;
@@ -63,6 +63,7 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public ProductResponseDetails getProductDetails(Long productId) {
         //producctun tapilmasi
+        //todo: productinventory yoxlanmalidi
         log.info("Retrieving product details for id={}", productId);
 
         Products product = productRepo.findByIdForProduct(productId).orElseThrow(() -> {
@@ -169,6 +170,7 @@ public class ProductServiceImpl implements ProductService {
                     .orElse(null);
             return match == null ? 0 : ((Number) match[1]).intValue();
         }).reversed());
+        checkInventory(products);
 
         return products;
     }
@@ -239,8 +241,23 @@ public class ProductServiceImpl implements ProductService {
         query.where(cb.and(predicates.toArray(new Predicate[0])));
 
         TypedQuery<Products> typedQuery = em.createQuery(query);
+        checkInventory(typedQuery.getResultList());
         return typedQuery.getResultList();
     }
+
+
+    private void checkInventory(List<Products> products) {
+        products.removeIf(product -> {
+            ProductInventory inventory = productInventoryRepo.findById(product.getId())
+                    .orElseThrow(() -> {
+                        log.error("❌ Inventory not found for productId={}", product.getId());
+                        return BaseException.notFound(ProductInventory.class.getSimpleName(),
+                                "productId", String.valueOf(product.getId()));
+                    });
+            return inventory.getQuantity() <= 0;
+        });
+    }
+
 
 
 }

@@ -20,6 +20,7 @@ public enum ErrorResponseMessages implements ResponseMessages {
     COUPON_NOT_APPLICABLE("coupon_not_applicable","This coupon does not apply to any products in your cart.", HttpStatus.BAD_REQUEST),
     CART_EMPTY("cart_empty", "Your cart is empty.", HttpStatus.BAD_REQUEST),
     ORDER_EMPTY("order_empty", "Your order is empty.", HttpStatus.BAD_REQUEST),
+
     ;
 
 

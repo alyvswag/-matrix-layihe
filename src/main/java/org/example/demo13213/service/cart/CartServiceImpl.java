@@ -6,14 +6,12 @@ import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.example.demo13213.exception.BaseException;
-import org.example.demo13213.model.dao.CartItems;
-import org.example.demo13213.model.dao.Carts;
-import org.example.demo13213.model.dao.Coupons;
-import org.example.demo13213.model.dao.Products;
+import org.example.demo13213.model.dao.*;
 import org.example.demo13213.model.dto.response.cart.ProductCouponResponse;
 import org.example.demo13213.repo.cart.CartItemRepo;
 import org.example.demo13213.repo.cart.CartRepo;
 import org.example.demo13213.repo.coupon.CouponRepo;
+import org.example.demo13213.repo.product.ProductInventoryRepo;
 import org.example.demo13213.repo.product.ProductRepo;
 import org.example.demo13213.security.UserPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -25,6 +23,7 @@ import java.util.Objects;
 import java.util.Optional;
 
 import static org.example.demo13213.model.dto.enums.response.ErrorResponseMessages.COUPON_NOT_APPLICABLE;
+import static org.example.demo13213.model.dto.enums.response.ErrorResponseMessages.PRODUCT_OUT_OF_STOCK;
 
 @Service
 @FieldDefaults(level = AccessLevel.PRIVATE)
@@ -36,6 +35,7 @@ public class CartServiceImpl implements CartService {
     final CartItemRepo cartItemRepo;
     final ProductRepo productRepo;
     final CouponRepo couponRepo;
+    final ProductInventoryRepo productInventoryRepo;
 
 
     @Override
@@ -63,6 +63,15 @@ public class CartServiceImpl implements CartService {
             log.error("❌ Product not found. productId={}", productId);
             return BaseException.notFound("product", productId.toString(), productId);
         });
+        ProductInventory inventory = productInventoryRepo.findById(product.getId())
+                .orElseThrow(() -> {
+                    log.error("❌ Inventory not found for productId={}", product.getId());
+                    return BaseException.notFound(ProductInventory.class.getSimpleName(),
+                            "productId", String.valueOf(product.getId()));
+                });
+        if(inventory.getQuantity()<=0){
+            throw BaseException.of(PRODUCT_OUT_OF_STOCK);
+        }
 
         log.debug("✔ Product found. id={}, name={}", product.getId(), product.getName());
 
