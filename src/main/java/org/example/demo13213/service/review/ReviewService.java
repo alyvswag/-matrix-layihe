@@ -7,9 +7,9 @@ import org.example.demo13213.model.dto.request.review.ReviewRequestUpdate;
 import java.util.List;
 
 public interface ReviewService {
-    void addReview(ReviewRequestCreate requestCreate);
+    Reviews addReview(ReviewRequestCreate requestCreate);
     List<Reviews> getReviews(Long productId);
-    void updateRatingAndReview(ReviewRequestUpdate ratAndRevRequestUpdate);
-    void deleteRatingAndReview(Long id);
+    void updateReview(ReviewRequestUpdate requestUpdate);
+    void deleteReview(Long id);
     //RatingResponse getAverageRating(Long bookId);
 }

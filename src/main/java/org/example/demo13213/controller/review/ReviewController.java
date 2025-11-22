@@ -6,6 +6,7 @@ import lombok.experimental.FieldDefaults;
 import org.example.demo13213.model.dao.Products;
 import org.example.demo13213.model.dao.Reviews;
 import org.example.demo13213.model.dto.request.review.ReviewRequestCreate;
+import org.example.demo13213.model.dto.request.review.ReviewRequestUpdate;
 import org.example.demo13213.model.dto.response.base.BaseResponse;
 import org.example.demo13213.service.review.ReviewService;
 import org.springframework.http.HttpStatus;
@@ -23,12 +24,21 @@ public class ReviewController {
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/add-review")
-    public BaseResponse<Void> addReview(@RequestBody ReviewRequestCreate ratingAndReview) {
-        reviewService.addReview(ratingAndReview);
-        return BaseResponse.created();
+    public BaseResponse<Reviews> addReview(@RequestBody ReviewRequestCreate ratingAndReview) {
+        return BaseResponse.created(reviewService.addReview(ratingAndReview));
     }
     @GetMapping("/get-reviews/{productId}")
     public BaseResponse<List<Reviews>> getReviews(@PathVariable Long productId) {
         return BaseResponse.success(reviewService.getReviews(productId));
+    }
+    @PostMapping("/update-review/")
+    public BaseResponse<Void> updateReview(@RequestBody ReviewRequestUpdate requestUpdate) {
+        reviewService.updateReview(requestUpdate);
+        return BaseResponse.success();
+    }
+    @PostMapping("/delete-review/{productId}")
+    public BaseResponse<Void> deleteReview(@PathVariable Long productId) {
+        reviewService.deleteReview(productId);
+        return BaseResponse.success();
     }
 }

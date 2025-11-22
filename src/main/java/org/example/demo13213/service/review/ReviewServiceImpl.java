@@ -31,7 +31,7 @@ public class ReviewServiceImpl implements ReviewService {
 
 
     @Override
-    public void addReview(ReviewRequestCreate requestCreate) {
+    public Reviews addReview(ReviewRequestCreate requestCreate) {
         UserPrincipal user = (UserPrincipal) SecurityContextHolder.getContext()
                 .getAuthentication()
                 .getPrincipal();
@@ -52,22 +52,27 @@ public class ReviewServiceImpl implements ReviewService {
         r.setProduct(product);
         r.setRating(requestCreate.getRating());
         r.setComment(requestCreate.getComment());
-        reviewRepo.save(r);
+        return reviewRepo.save(r);
     }
 
     @Override
     public List<Reviews> getReviews(Long productId) {
-
-        return List.of();
+        return reviewRepo.findByProductIdForReview(productId);
     }
 
     @Override
-    public void updateRatingAndReview(ReviewRequestUpdate ratAndRevRequestUpdate) {
-
+    public void updateReview(ReviewRequestUpdate requestUpdate) {
+        Reviews r = reviewRepo.findByReviewId(requestUpdate.getReviewId())
+                .orElseThrow(() -> {
+            return BaseException.notFound("review", requestUpdate.getReviewId().toString(), requestUpdate.getReviewId());
+        });
+        r.setRating(requestUpdate.getRating());
+        r.setComment(requestUpdate.getComment());
+        reviewRepo.save(r);
     }
 
     @Override
-    public void deleteRatingAndReview(Long id) {
-
+    public void deleteReview(Long id) {
+        reviewRepo.deleteById(id);
     }
 }
