@@ -44,12 +44,10 @@
             </or>
         </preConditions>
 
-        <!-- Əvvəlcə foreign key constraint silinir -->
         <dropForeignKeyConstraint
                 baseTableName="user_coupons"
                 constraintName="fk_user_coupons_used_order"/>
 
-        <!-- Daha sonra sütun silinir -->
         <dropColumn
                 tableName="user_coupons"
                 columnName="used_order_id"/>

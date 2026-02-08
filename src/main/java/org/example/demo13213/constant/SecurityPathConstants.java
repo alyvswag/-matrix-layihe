@@ -22,8 +22,8 @@ public final class SecurityPathConstants {
     public static final String[] AUTHENTICATED = {
             "/api/v1/auth/logout/**",
             "/api/v1/cart/**",
-           "/api/v1/orders/**",
-            "/api/v1/reviews/**"
+            "/api/v1/orders/**",
+            "/api/v1/reviews/**",
     };
 
 

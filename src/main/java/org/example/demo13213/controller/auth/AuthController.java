@@ -1,25 +1,20 @@
 package org.example.demo13213.controller.auth;
 
-
-
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import org.example.demo13213.model.dao.Products;
 import org.example.demo13213.model.dto.request.login.LoginRequestPayload;
 import org.example.demo13213.model.dto.request.login.UserRequestCreate;
 import org.example.demo13213.model.dto.response.base.BaseResponse;
 import org.example.demo13213.model.dto.response.login.LoginResponse;
-
 import org.example.demo13213.service.auth.AuthService;
-
-import org.example.demo13213.service.product.ProductService;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
-
-import java.util.List;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/v1/auth")

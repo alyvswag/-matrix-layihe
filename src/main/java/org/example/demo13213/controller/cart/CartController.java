@@ -16,23 +16,25 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/cart")
-@FieldDefaults(level = AccessLevel.PRIVATE)
 @RequiredArgsConstructor
 public class CartController {
 
-     final CartService cartService;
+    private final CartService cartService;
 
     @GetMapping("/")
     public BaseResponse<List<CartItems>> getCart() {
         return BaseResponse.success(cartService.getUserCart());
     }
+
     @PostMapping("/items/")
     public BaseResponse<Void> addCart(@RequestParam Long productId) {
         cartService.addCart(productId);
         return BaseResponse.success();
     }
+
     @PostMapping("/apply-coupon/")
     public BaseResponse<List<ProductCouponResponse>> addCart(@RequestParam String coupon) {
         return BaseResponse.success(cartService.applyCoupon(coupon));
     }
+
 }

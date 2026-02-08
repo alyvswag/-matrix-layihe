@@ -30,4 +30,7 @@ public interface OrderRepo  extends CrudRepository<Orders, Integer> {
     GROUP BY o.status
 """)
     List<Object[]> countOrdersByStatus();
+
+
+
 }
