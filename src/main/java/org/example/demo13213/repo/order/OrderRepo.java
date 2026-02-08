@@ -17,4 +17,17 @@ public interface OrderRepo  extends CrudRepository<Orders, Integer> {
 
     @Query("Select o from Orders o where o.user.id = :id and o.status = 'PAID' ")
     List<Orders> findOrdersByUserId(@Param("id") Long id);
+
+    @Query("SELECT COUNT(o) FROM Orders o")
+    long countAllOrders();
+
+    @Query("SELECT COALESCE(SUM(o.grandTotal), 0) FROM Orders o WHERE o.status = 'PAID'")
+    Double sumPaidOrdersRevenue();
+
+    @Query("""
+    SELECT o.status, COUNT(o)
+    FROM Orders o
+    GROUP BY o.status
+""")
+    List<Object[]> countOrdersByStatus();
 }

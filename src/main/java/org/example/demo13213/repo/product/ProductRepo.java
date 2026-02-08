@@ -39,5 +39,6 @@ public interface ProductRepo extends JpaRepository<Products, Long> {
             """)
     Page<Products> findBestSellers(Pageable pageable);
 
+    long countByIsActiveTrue();
 
 }
