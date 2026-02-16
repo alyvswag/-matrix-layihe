@@ -1,6 +1,7 @@
 package org.example.demo13213.repo.review;
 
 import org.example.demo13213.model.dao.Reviews;
+import org.example.demo13213.model.dto.response.adminStats.TopProductResponse;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -21,6 +22,9 @@ public interface ReviewRepo extends JpaRepository<Reviews, Long> {
     @Query("SELECT AVG(r.rating) FROM Reviews r WHERE r.product.id = :productId")
     Double findAverageRatingByProductId(@Param("productId") Long productId);
 
-    @Query("SELECT AVG(r.rating) FROM Reviews r WHERE r.isApproved = true")
-    Double findAverageRating();
+
+    @Query("SELECT new org.example.demo13213.model.dto.response.adminStats.TopProductResponse(" +
+            "r.product.name, COUNT(r)) " +
+            "FROM Reviews r GROUP BY r.product.name ORDER BY COUNT(r) DESC")
+    List<TopProductResponse> getMostReviewedProducts();
 }

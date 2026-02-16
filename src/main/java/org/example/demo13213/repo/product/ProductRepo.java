@@ -3,6 +3,7 @@ package org.example.demo13213.repo.product;
 import org.example.demo13213.model.dao.Products;
 import org.example.demo13213.model.dao.Reviews;
 import org.example.demo13213.model.dao.Users;
+import org.example.demo13213.model.dto.response.adminStats.TopProductResponse;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -30,15 +31,10 @@ public interface ProductRepo extends JpaRepository<Products, Long> {
     @Query("SELECT p FROM Products p WHERE p.isActive = TRUE ORDER BY p.createdAt DESC")
     Page<Products> findNewArrivals(Pageable pageable);
 
-    @Query("""
-                SELECT oi.product 
-                FROM OrderItems oi 
-                WHERE oi.product.isActive = TRUE 
-                GROUP BY oi.product 
-                ORDER BY SUM(oi.quantity) DESC
-            """)
+    @Query("SELECT oi.product FROM OrderItems oi WHERE oi.product.isActive = TRUE GROUP BY oi.product ORDER BY SUM(oi.quantity) DESC")
     Page<Products> findBestSellers(Pageable pageable);
 
-    long countByIsActiveTrue();
 
+    @Query("SELECT new org.example.demo13213.model.dto.response.adminStats.TopProductResponse(oi.product.name, SUM(oi.quantity)) FROM OrderItems oi WHERE oi.product.isActive = TRUE GROUP BY oi.product.name ORDER BY SUM(oi.quantity) DESC")
+    List<TopProductResponse> findTopSellingProducts();
 }
