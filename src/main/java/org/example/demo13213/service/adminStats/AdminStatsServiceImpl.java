@@ -10,7 +10,10 @@ import org.example.demo13213.model.dto.response.adminStats.TopProductResponse;
 import org.example.demo13213.repo.order.OrderRepo;
 import org.example.demo13213.repo.product.ProductRepo;
 import org.example.demo13213.repo.review.ReviewRepo;
+import org.example.demo13213.repo.user.UserRepo;
 import org.springframework.stereotype.Service;
+
+import java.math.BigDecimal;
 import java.util.List;
 
 @Service
@@ -22,10 +25,15 @@ public class AdminStatsServiceImpl implements AdminStatsService {
     private final OrderRepo orderRepo;
     private final ProductRepo productRepo;
     private final ReviewRepo reviewRepo;
+    private final UserRepo userRepo;
 
     @Override
     public OverviewResponse getOverview() {
-        return orderRepo.getOverviewData();
+        long ordersCount = orderRepo.count();
+        BigDecimal grandTotalSum = orderRepo.sumGrandTotal();
+        long usersCount = userRepo.count();
+
+        return new OverviewResponse(ordersCount, grandTotalSum, usersCount);
     }
 
     @Override

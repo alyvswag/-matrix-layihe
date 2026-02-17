@@ -14,6 +14,8 @@ public interface UserRepo extends JpaRepository<Users, Long> {
     @Query("SELECT u FROM Users u WHERE u.username = :username AND u.isActive = true ")
     Optional<Users> findUserByUsername(@Param("username") String username);
 
+    long count();
+
 //    @Query("SELECT u FROM User u WHERE u.id = :id AND u.status = 'ACTIVE' ")
 //    Optional<User> findUserById(@Param("id") Long id);
 //

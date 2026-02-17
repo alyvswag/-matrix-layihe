@@ -1,6 +1,7 @@
 package org.example.demo13213.repo.review;
 
 import org.example.demo13213.model.dao.Reviews;
+import org.example.demo13213.model.dto.response.adminStats.TopProductResponse;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

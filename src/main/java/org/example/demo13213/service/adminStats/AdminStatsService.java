@@ -1,12 +1,18 @@
 package org.example.demo13213.service.adminStats;
 
+import org.example.demo13213.model.dto.response.adminStats.OrderStatusResponse;
+import org.example.demo13213.model.dto.response.adminStats.OverviewResponse;
+import org.example.demo13213.model.dto.response.adminStats.TopProductResponse;
+
 import java.util.List;
 import java.util.Map;
 
 public interface AdminStatsService {
-    Map<String, Object> getOverview();
+    OverviewResponse getOverview();
 
-    List<Map<String, Object>> getTopProducts();
+    List<TopProductResponse> getTopProducts();
 
-    List<Map<String, Object>> getOrderStatusStats();
+    List<OrderStatusResponse> getOrderStatusStats();
+
+    List<TopProductResponse> getMostReviewedProducts();
 }

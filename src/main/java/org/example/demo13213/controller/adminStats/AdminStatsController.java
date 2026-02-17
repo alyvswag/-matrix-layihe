@@ -1,19 +1,17 @@
 package org.example.demo13213.controller.adminStats;
 
 
-import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
-import lombok.experimental.FieldDefaults;
-import org.example.demo13213.model.dao.CartItems;
+import org.example.demo13213.model.dto.response.adminStats.OrderStatusResponse;
+import org.example.demo13213.model.dto.response.adminStats.OverviewResponse;
+import org.example.demo13213.model.dto.response.adminStats.TopProductResponse;
 import org.example.demo13213.model.dto.response.base.BaseResponse;
-
-
-import org.example.demo13213.model.dto.response.cart.ProductCouponResponse;
-import org.example.demo13213.service.cart.CartService;
-import org.springframework.web.bind.annotation.*;
+import org.example.demo13213.service.adminStats.AdminStatsService;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/api/admin/stats")
