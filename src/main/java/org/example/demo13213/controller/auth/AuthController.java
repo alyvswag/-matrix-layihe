@@ -18,11 +18,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/v1/auth")
-@FieldDefaults(level = AccessLevel.PRIVATE)
-@RequiredArgsConstructor(access = AccessLevel.PRIVATE)
+@RequiredArgsConstructor
 public class AuthController {
 
-    final AuthService authService;
+    private final AuthService authService;
 
     @PostMapping("/login")
     public BaseResponse<LoginResponse> login(@RequestBody LoginRequestPayload loginRequestPayload) {

@@ -24,6 +24,7 @@ public final class SecurityPathConstants {
             "/api/v1/cart/**",
             "/api/v1/orders/**",
             "/api/v1/reviews/**",
+            "/api/admin/stats/**"
     };
 
 
