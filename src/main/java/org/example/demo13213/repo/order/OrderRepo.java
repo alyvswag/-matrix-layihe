@@ -2,6 +2,7 @@ package org.example.demo13213.repo.order;
 
 import org.example.demo13213.model.dao.Orders;
 import org.example.demo13213.model.dao.Products;
+import org.example.demo13213.model.dto.enums.order.OrderStatus;
 import org.example.demo13213.model.dto.response.adminStats.OrderStatusResponse;
 import org.example.demo13213.model.dto.response.adminStats.OverviewResponse;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -25,8 +26,7 @@ public interface OrderRepo  extends JpaRepository<Orders, Integer> {
     @Query("Select o from Orders o where o.user.id = :id and o.status = 'PAID' ")
     List<Orders> findOrdersByUserId(@Param("id") Long id);
 
-    @Query("SELECT new org.example.demo13213.model.dto.response.adminStats.OrderStatusResponse(o.status, COUNT(o)) FROM Orders o GROUP BY o.status")
-    List<OrderStatusResponse> findOrderStatusStats();
+    long countOrdersByStatus(OrderStatus orderStatus);
 
     long count();
 

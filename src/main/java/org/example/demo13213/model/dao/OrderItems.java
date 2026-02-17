@@ -21,7 +21,6 @@ public class OrderItems {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    //@Cascade(Cas)//silienecek
     Long id;
 
     @ManyToOne

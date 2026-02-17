@@ -20,7 +20,6 @@ public class ProductInventory {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    //@Cascade(Cas)//silienecek
     Long productId;
 
     @MapsId

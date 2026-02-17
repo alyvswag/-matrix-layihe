@@ -2,6 +2,7 @@ package org.example.demo13213.controller.adminStats;
 
 
 import lombok.RequiredArgsConstructor;
+import org.example.demo13213.model.dto.enums.order.OrderStatus;
 import org.example.demo13213.model.dto.response.adminStats.OrderStatusResponse;
 import org.example.demo13213.model.dto.response.adminStats.OverviewResponse;
 import org.example.demo13213.model.dto.response.adminStats.TopProductResponse;
@@ -9,6 +10,7 @@ import org.example.demo13213.model.dto.response.base.BaseResponse;
 import org.example.demo13213.service.adminStats.AdminStatsService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -31,8 +33,8 @@ public class AdminStatsController {
     }
 
     @GetMapping("/order-status")
-    public BaseResponse<List<OrderStatusResponse>> getOrderStatusStats() {
-        return BaseResponse.success(adminStatsService.getOrderStatusStats());
+    public BaseResponse<OrderStatusResponse> getOrderStatusStats(@RequestParam OrderStatus orderStatus) {
+        return BaseResponse.success(adminStatsService.getOrderStatusStats(orderStatus));
     }
 
     @GetMapping("/most-reviewed")

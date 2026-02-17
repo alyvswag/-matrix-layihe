@@ -1,5 +1,6 @@
 package org.example.demo13213.service.adminStats;
 
+import org.example.demo13213.model.dto.enums.order.OrderStatus;
 import org.example.demo13213.model.dto.response.adminStats.OrderStatusResponse;
 import org.example.demo13213.model.dto.response.adminStats.OverviewResponse;
 import org.example.demo13213.model.dto.response.adminStats.TopProductResponse;
@@ -12,7 +13,7 @@ public interface AdminStatsService {
 
     List<TopProductResponse> getTopProducts();
 
-    List<OrderStatusResponse> getOrderStatusStats();
+    OrderStatusResponse getOrderStatusStats(OrderStatus orderStatus);
 
     List<TopProductResponse> getMostReviewedProducts();
 }

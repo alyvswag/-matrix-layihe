@@ -24,7 +24,6 @@ public class CartItems {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    //@Cascade(Cas)//silienecek
     Long id;
 
     @ManyToOne

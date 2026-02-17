@@ -22,7 +22,6 @@ public class Coupons {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    //@Cascade(Cas)//silienecek
     Long id;
 
     @Column(nullable = false, length = 100)

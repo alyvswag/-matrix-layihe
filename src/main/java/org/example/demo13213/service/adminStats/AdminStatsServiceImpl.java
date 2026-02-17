@@ -4,16 +4,21 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
+import org.example.demo13213.model.dao.OrderItems;
+import org.example.demo13213.model.dao.ProductInventory;
+import org.example.demo13213.model.dto.enums.order.OrderStatus;
 import org.example.demo13213.model.dto.response.adminStats.OrderStatusResponse;
 import org.example.demo13213.model.dto.response.adminStats.OverviewResponse;
 import org.example.demo13213.model.dto.response.adminStats.TopProductResponse;
+import org.example.demo13213.repo.order.OrderItemRepo;
 import org.example.demo13213.repo.order.OrderRepo;
-import org.example.demo13213.repo.product.ProductRepo;
+import org.example.demo13213.repo.product.ProductInventoryRepo;
 import org.example.demo13213.repo.review.ReviewRepo;
 import org.example.demo13213.repo.user.UserRepo;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -23,9 +28,10 @@ import java.util.List;
 public class AdminStatsServiceImpl implements AdminStatsService {
 
     private final OrderRepo orderRepo;
-    private final ProductRepo productRepo;
     private final ReviewRepo reviewRepo;
     private final UserRepo userRepo;
+    private final OrderItemRepo orderItemRepo;
+    private final ProductInventoryRepo productInventoryRepo;
 
     @Override
     public OverviewResponse getOverview() {
@@ -38,17 +44,27 @@ public class AdminStatsServiceImpl implements AdminStatsService {
 
     @Override
     public List<TopProductResponse> getTopProducts() {
-        return productRepo.findTopSellingProducts();
+        List<OrderItems> oi = orderItemRepo.findAllByProduct_IsActive(Boolean.TRUE);
+        List<TopProductResponse> list = new ArrayList<>();
+
+        for (OrderItems o : oi) {
+            ProductInventory p = productInventoryRepo.findByIdForProductQuantity(o.getProduct().getId()).orElseThrow(
+            );
+            list.add(new TopProductResponse(p.getProduct().getName(), p.getQuantity()));
+        }
+
+        return list;
     }
 
     @Override
-    public List<OrderStatusResponse> getOrderStatusStats() {
-        return orderRepo.findOrderStatusStats();
+    public OrderStatusResponse getOrderStatusStats(OrderStatus orderStatus) {
+        long count = orderRepo.countOrdersByStatus(orderStatus);
+        return new OrderStatusResponse(orderStatus.name(), count);
     }
 
     @Override
     public List<TopProductResponse> getMostReviewedProducts() {
-        return reviewRepo.getMostReviewedProducts();
+        return null;
     }
 }
 

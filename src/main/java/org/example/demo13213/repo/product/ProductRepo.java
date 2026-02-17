@@ -34,7 +34,4 @@ public interface ProductRepo extends JpaRepository<Products, Long> {
     @Query("SELECT oi.product FROM OrderItems oi WHERE oi.product.isActive = TRUE GROUP BY oi.product ORDER BY SUM(oi.quantity) DESC")
     Page<Products> findBestSellers(Pageable pageable);
 
-
-    @Query("SELECT new org.example.demo13213.model.dto.response.adminStats.TopProductResponse(oi.product.name, SUM(oi.quantity)) FROM OrderItems oi WHERE oi.product.isActive = TRUE GROUP BY oi.product.name ORDER BY SUM(oi.quantity) DESC")
-    List<TopProductResponse> findTopSellingProducts();
 }

@@ -7,5 +7,5 @@ import lombok.Data;
 @AllArgsConstructor
 public class TopProductResponse {
     private String name;
-    private Long soldQuantity;
+    private Integer soldQuantity;
 }
