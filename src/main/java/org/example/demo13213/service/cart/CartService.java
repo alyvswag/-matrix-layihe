@@ -12,4 +12,6 @@ public interface CartService {
 
    //todo: void removeCart(Long productId);
    List<ProductCouponResponse> applyCoupon(String couponCode);
+
+    void removeCart(Long productId);
 }

@@ -15,13 +15,4 @@ public interface UserRepo extends JpaRepository<Users, Long> {
     Optional<Users> findUserByUsername(@Param("username") String username);
 
     long count();
-
-//    @Query("SELECT u FROM User u WHERE u.id = :id AND u.status = 'ACTIVE' ")
-//    Optional<User> findUserById(@Param("id") Long id);
-//
-//    @Query(" SELECT u FROM User u where u.status = 'ACTIVE' ")
-//    List<User> findAllUser();
-//
-//    @Query("SELECT u FROM UserRole u WHERE u.role.roleName = :roleName AND u.isActive = true ")
-//    List<UserRole>  getUsersByRole(@Param("roleName") RoleName roleName);
 }

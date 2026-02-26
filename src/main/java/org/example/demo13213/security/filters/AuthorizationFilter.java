@@ -9,7 +9,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.example.demo13213.security.jwt.TokenProvider;
 import org.example.demo13213.service.auth.AuthService;
 import org.springframework.http.HttpHeaders;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -23,7 +22,6 @@ import static org.example.demo13213.constant.TokenConstants.PREFIX;
 public class AuthorizationFilter extends OncePerRequestFilter {
 
     final TokenProvider tokenProvider;
-    final UserDetailsService userDetailsService;
     final AuthService authService;
 
     @Override
@@ -38,11 +36,11 @@ public class AuthorizationFilter extends OncePerRequestFilter {
         }
 
         String tokenRequest = request.getHeader(HttpHeaders.AUTHORIZATION);
-        if (tokenRequest != null && tokenRequest.startsWith(PREFIX)) { //baslangic bearer ile baslamilidi
+        if (tokenRequest != null && tokenRequest.startsWith(PREFIX)) {
             String token = tokenRequest.substring(PREFIX.length());
             authService.setAuthentication(tokenProvider.getUsername(token));
         }
 
-        filterChain.doFilter(request, response);//icaze verrik apinin islemesine
+        filterChain.doFilter(request, response);
     }
 }

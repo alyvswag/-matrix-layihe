@@ -131,7 +131,6 @@ public class OrderServiceImpl implements OrderService {
         orderRepo.save(order);
 
         // 7) Səbəti təmizlə
-        //todo: sebebtin temizlenmemesi ucun asagidaki setri commente at
         cartItemRepo.deleteAll(cartItems);
 
         return order;

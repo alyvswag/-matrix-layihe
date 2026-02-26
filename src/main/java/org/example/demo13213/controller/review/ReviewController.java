@@ -38,7 +38,7 @@ public class ReviewController {
         return BaseResponse.success();
     }
 
-    @PostMapping("/delete-review/{productId}")
+    @DeleteMapping("/delete-review/{productId}")
     public BaseResponse<Void> deleteReview(@PathVariable Long productId) {
         reviewService.deleteReview(productId);
         return BaseResponse.success();

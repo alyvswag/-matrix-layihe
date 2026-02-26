@@ -8,8 +8,10 @@ import java.util.List;
 
 public interface ReviewService {
     Reviews addReview(ReviewRequestCreate requestCreate);
+
     List<Reviews> getReviews(Long productId);
+
     void updateReview(ReviewRequestUpdate requestUpdate);
+
     void deleteReview(Long id);
-    //RatingResponse getAverageRating(Long bookId);
 }

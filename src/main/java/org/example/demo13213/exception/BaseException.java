@@ -1,6 +1,11 @@
 package org.example.demo13213.exception;
 
-import lombok.*;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.example.demo13213.exception.types.NotFoundExceptionType;
 import org.example.demo13213.exception.types.NullNotAllowedExceptionType;
@@ -8,7 +13,7 @@ import org.example.demo13213.model.dto.response.base.ResponseMessages;
 
 import java.util.Map;
 
-import static org.example.demo13213.model.dto.enums.response.ErrorResponseMessages.*;
+import static org.example.demo13213.model.dto.enums.response.ErrorResponseMessages.NOT_FOUND;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
@@ -32,10 +37,6 @@ public class BaseException extends RuntimeException {
                 .build();
     }
 
-    public static BaseException unexpected() {
-        return of(UNEXPECTED);
-    }
-
     public static BaseException notFound(String target, String field, Object value) {
         return BaseException.builder()
                 .responseMessages(NOT_FOUND)
@@ -45,12 +46,4 @@ public class BaseException extends RuntimeException {
                 .build();
     }
 
-    public static BaseException nullNotAllowed(String target) {
-        return BaseException.builder()
-                .responseMessages(NULL_NOT_ALLOWED)
-                .nullNotAllowedData(
-                        NullNotAllowedExceptionType.of(target)
-                )
-                .build();
-    }
 }

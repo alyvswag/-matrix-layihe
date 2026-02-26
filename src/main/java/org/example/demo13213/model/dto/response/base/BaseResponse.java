@@ -22,7 +22,7 @@ import static org.example.demo13213.model.dto.enums.response.SuccessResponseMess
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 @Builder(access = AccessLevel.PRIVATE)
 @FieldDefaults(level = AccessLevel.PRIVATE)
-@JsonInclude(JsonInclude.Include.NON_NULL) //null geden jsonlari baglayir
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class BaseResponse<T> {
     HttpStatus httpStatus;
     Meta meta;
@@ -88,10 +88,6 @@ public class BaseResponse<T> {
                 .data(data)
                 .meta(Meta.responseOf(CREATED))
                 .build();
-    }
-
-    public static <T> BaseResponse<T> created() {
-        return created(null);
     }
 
     public static BaseResponse<?> error(BaseException ex) {

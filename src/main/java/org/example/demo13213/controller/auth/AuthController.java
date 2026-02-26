@@ -43,8 +43,4 @@ public class AuthController {
         return BaseResponse.success();
     }
 
-    @PostMapping("/test-auth")
-    public BaseResponse<String> test() {
-        return BaseResponse.success("salam");
-    }
 }

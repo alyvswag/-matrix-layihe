@@ -63,9 +63,7 @@ public class ReviewServiceImpl implements ReviewService {
     @Override
     public void updateReview(ReviewRequestUpdate requestUpdate) {
         Reviews r = reviewRepo.findByReviewId(requestUpdate.getReviewId())
-                .orElseThrow(() -> {
-            return BaseException.notFound("review", requestUpdate.getReviewId().toString(), requestUpdate.getReviewId());
-        });
+                .orElseThrow(() -> BaseException.notFound("review", requestUpdate.getReviewId().toString(), requestUpdate.getReviewId()));
         r.setRating(requestUpdate.getRating());
         r.setComment(requestUpdate.getComment());
         reviewRepo.save(r);

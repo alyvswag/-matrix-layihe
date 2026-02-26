@@ -30,5 +30,5 @@ public class GlobalExceptionHandler {
     public ResponseEntity<BaseResponse<?>> handleBaseException(ExpiredJwtException ex) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(BaseResponse.error(ex));
     }
+
 }
-//todo: expride jwt exp handle ele

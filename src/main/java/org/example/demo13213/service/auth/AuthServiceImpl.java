@@ -64,7 +64,6 @@ public class AuthServiceImpl implements AuthService {
 
         log.info("✔ User created successfully: id={}, username={}", users.getId(), users.getUsername());
 
-        //todo:  mutleq user yaradan kimi carts yarat
         Carts carts = new Carts();
         carts.setUser(users);
         cartRepo.save(carts);
