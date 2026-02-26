@@ -64,7 +64,6 @@ public class AdminStatsServiceImpl implements AdminStatsService {
 
     @Override
     public List<TopProductResponse> getMostReviewedProducts() {
-        return null;
+        return reviewRepo.getMostReviewedProducts();
     }
 }
-

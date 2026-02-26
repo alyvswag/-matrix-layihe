@@ -1,6 +1,5 @@
 package org.example.demo13213.security.jwt;
 
-
 import java.util.List;
 
 public interface TokenService<T, V> {

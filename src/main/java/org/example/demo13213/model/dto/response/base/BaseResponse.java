@@ -1,7 +1,5 @@
 package org.example.demo13213.model.dto.response.base;
 
-
-
 import com.fasterxml.jackson.annotation.JsonInclude;
 import io.jsonwebtoken.ExpiredJwtException;
 import lombok.*;
@@ -18,7 +16,6 @@ import static org.example.demo13213.model.dto.enums.response.ErrorResponseMessag
 import static org.example.demo13213.model.dto.enums.response.ErrorResponseMessages.NULL_NOT_ALLOWED;
 import static org.example.demo13213.model.dto.enums.response.SuccessResponseMessages.CREATED;
 import static org.example.demo13213.model.dto.enums.response.SuccessResponseMessages.SUCCESS;
-
 
 @Data
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
@@ -46,9 +43,11 @@ public class BaseResponse<T> {
                     .message(message)
                     .build();
         }
+
         public static Meta responseOf(ResponseMessages responseMessages) {
             return of(responseMessages.key(), responseMessages.message());
         }
+
         public static Meta of(BaseException ex) {
             if (ex.getResponseMessages().equals(NOT_FOUND)) {
                 NotFoundExceptionType notFoundData = ex.getNotFoundData();
@@ -58,8 +57,8 @@ public class BaseResponse<T> {
 
                 );
             }
-            if(ex.getResponseMessages().equals(NULL_NOT_ALLOWED)){
-                NullNotAllowedExceptionType nullNotAllowed   = ex.getNullNotAllowedData();
+            if (ex.getResponseMessages().equals(NULL_NOT_ALLOWED)) {
+                NullNotAllowedExceptionType nullNotAllowed = ex.getNullNotAllowedData();
 
                 return of(
                         String.format(ex.getResponseMessages().key(), nullNotAllowed.getTarget().toLowerCase()),
@@ -78,9 +77,11 @@ public class BaseResponse<T> {
                 .data(data)
                 .build();
     }
+
     public static <T> BaseResponse<T> success() {
         return success(null);
     }
+
     public static <T> BaseResponse<T> created(T data) {
         return BaseResponse.<T>builder()
                 .httpStatus(HttpStatus.CREATED)
@@ -88,28 +89,29 @@ public class BaseResponse<T> {
                 .meta(Meta.responseOf(CREATED))
                 .build();
     }
+
     public static <T> BaseResponse<T> created() {
         return created(null);
     }
+
     public static BaseResponse<?> error(BaseException ex) {
         return BaseResponse.builder()
                 .meta(Meta.of(ex))
                 .httpStatus(ex.getResponseMessages().httpStatus())
                 .build();
     }
+
     public static BaseResponse<?> error(SQLException ex) {
         return BaseResponse.builder()
-                .meta(Meta.of(ex.getClass().getSimpleName(),ex.getMessage()))
+                .meta(Meta.of(ex.getClass().getSimpleName(), ex.getMessage()))
                 .httpStatus(HttpStatus.BAD_REQUEST)
                 .build();
     }
+
     public static BaseResponse<?> error(ExpiredJwtException ex) {
         return BaseResponse.builder()
-                .meta(Meta.of(ex.getClass().getSimpleName(),ex.getMessage()))
+                .meta(Meta.of(ex.getClass().getSimpleName(), ex.getMessage()))
                 .httpStatus(HttpStatus.BAD_REQUEST)
                 .build();
     }
-
-
-
 }

@@ -14,5 +14,4 @@ public interface ProductService {
     List<Products> getBestSellers();
 
     List<Products> filter(ProductFilterRequest productFilterRequest);
-
 }

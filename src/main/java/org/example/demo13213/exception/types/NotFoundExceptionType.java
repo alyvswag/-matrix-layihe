@@ -1,6 +1,5 @@
 package org.example.demo13213.exception.types;
 
-
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 

@@ -1,6 +1,5 @@
 package org.example.demo13213.exception;
 
-
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 import org.example.demo13213.exception.types.NotFoundExceptionType;
@@ -10,7 +9,6 @@ import org.example.demo13213.model.dto.response.base.ResponseMessages;
 import java.util.Map;
 
 import static org.example.demo13213.model.dto.enums.response.ErrorResponseMessages.*;
-
 
 @EqualsAndHashCode(callSuper = true)
 @Data
@@ -55,6 +53,4 @@ public class BaseException extends RuntimeException {
                 )
                 .build();
     }
-
-
 }

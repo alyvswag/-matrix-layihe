@@ -13,7 +13,6 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class HomeCatalogResponse {
-
     List<Products> newArrivals;
     List<Products> bestSellers;
 }

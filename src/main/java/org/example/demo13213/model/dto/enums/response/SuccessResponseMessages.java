@@ -7,15 +7,16 @@ import org.example.demo13213.model.dto.response.base.ResponseMessages;
 import org.springframework.http.HttpStatus;
 
 @AllArgsConstructor
-@FieldDefaults(makeFinal = true ,level = AccessLevel.PRIVATE)
+@FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
 public enum SuccessResponseMessages implements ResponseMessages {
     SUCCESS("Success", "Successfully", HttpStatus.OK),
-    CREATED("Created","Successfully created",HttpStatus.CREATED);
+    CREATED("Created", "Successfully created", HttpStatus.CREATED);
 
 
     String key;
     String message;
     HttpStatus httpStatus;
+
     @Override
     public String key() {
         return key;

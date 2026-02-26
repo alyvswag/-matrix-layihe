@@ -1,6 +1,5 @@
 package org.example.demo13213.controller.adminStats;
 
-
 import lombok.RequiredArgsConstructor;
 import org.example.demo13213.model.dto.enums.order.OrderStatus;
 import org.example.demo13213.model.dto.response.adminStats.OrderStatusResponse;
@@ -42,4 +41,3 @@ public class AdminStatsController {
         return BaseResponse.success(adminStatsService.getMostReviewedProducts());
     }
 }
-

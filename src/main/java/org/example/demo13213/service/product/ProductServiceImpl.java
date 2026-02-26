@@ -10,7 +10,6 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.catalina.User;
 import org.example.demo13213.exception.BaseException;
 import org.example.demo13213.model.dao.*;
 import org.example.demo13213.model.dto.request.product.ProductFilterRequest;
@@ -24,17 +23,13 @@ import org.example.demo13213.security.UserPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
-import javax.swing.text.html.Option;
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Optional;
 
-import static org.example.demo13213.model.dto.enums.response.ErrorResponseMessages.NOT_FOUND;
 import static org.example.demo13213.model.dto.enums.response.ErrorResponseMessages.PRODUCT_OUT_OF_STOCK;
-
 
 @Service
 @FieldDefaults(level = AccessLevel.PRIVATE)
@@ -200,7 +195,6 @@ public class ProductServiceImpl implements ProductService {
                     )
             );
         }
-
         if (productFilterRequest.getIsVegan() != null) {
             predicates.add(
                     cb.equal(
@@ -217,7 +211,6 @@ public class ProductServiceImpl implements ProductService {
                     )
             );
         }
-
         if (productFilterRequest.getSkinType() != null) {
             predicates.add(
                     cb.equal(
@@ -245,7 +238,6 @@ public class ProductServiceImpl implements ProductService {
         return typedQuery.getResultList();
     }
 
-
     private void checkInventory(List<Products> products) {
         products.removeIf(product -> {
             ProductInventory inventory = productInventoryRepo.findById(product.getId())
@@ -257,7 +249,4 @@ public class ProductServiceImpl implements ProductService {
             return inventory.getQuantity() <= 0;
         });
     }
-
-
-
 }

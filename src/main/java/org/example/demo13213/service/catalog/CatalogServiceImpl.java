@@ -27,7 +27,6 @@ public class CatalogServiceImpl implements CatalogService {
     final ProductRepo productRepo;
     final ProductInventoryRepo productInventoryRepo;
 
-
     @Override
     public List<Products> findBrandsWithProducts(Long brandId) {
         log.info("➡️ Request received: findBrandsWithProducts brandId={}", brandId);
@@ -62,6 +61,7 @@ public class CatalogServiceImpl implements CatalogService {
                 .bestSellers(bestSellersPage.getContent())
                 .build();
     }
+
     private void checkInventory(List<Products> products) {
         products.removeIf(product -> {
             ProductInventory inventory = productInventoryRepo.findById(product.getId())

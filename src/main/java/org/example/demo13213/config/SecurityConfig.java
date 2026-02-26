@@ -91,5 +91,4 @@ public class SecurityConfig {
             response.getOutputStream().println("{ \"error\": \"" + accessDeniedException.getMessage() + "\" }");
         };
     }
-
 }

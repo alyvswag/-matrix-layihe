@@ -7,7 +7,6 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.OffsetDateTime;
-import java.util.UUID;
 
 @Getter
 @Setter
@@ -21,7 +20,6 @@ public class Reviews {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    //@Cascade(Cas)//silienecek
     Long id;
 
     @ManyToOne

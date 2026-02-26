@@ -1,6 +1,5 @@
 package org.example.demo13213.security.jwt;
 
-
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -14,9 +13,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-
 import static org.example.demo13213.constant.TokenConstants.USERNAME_KEY;
-
 
 @Component
 public class TokenProvider implements TokenService<Users, Claims> {
@@ -80,5 +77,4 @@ public class TokenProvider implements TokenService<Users, Claims> {
                 .signWith(PublicPrivateKeyUtils.getPrivateKey(), SignatureAlgorithm.RS256)
                 .compact();
     }
-
 }

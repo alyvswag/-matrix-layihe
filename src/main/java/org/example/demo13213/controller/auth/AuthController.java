@@ -1,8 +1,6 @@
 package org.example.demo13213.controller.auth;
 
-import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
-import lombok.experimental.FieldDefaults;
 import org.example.demo13213.model.dto.request.login.LoginRequestPayload;
 import org.example.demo13213.model.dto.request.login.UserRequestCreate;
 import org.example.demo13213.model.dto.response.base.BaseResponse;
@@ -45,11 +43,8 @@ public class AuthController {
         return BaseResponse.success();
     }
 
-    //test ucun
-
     @PostMapping("/test-auth")
     public BaseResponse<String> test() {
-        return BaseResponse.success("salammm");
+        return BaseResponse.success("salam");
     }
-
 }

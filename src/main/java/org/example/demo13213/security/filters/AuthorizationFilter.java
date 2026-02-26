@@ -1,17 +1,13 @@
 package org.example.demo13213.security.filters;
 
-
-
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.example.demo13213.security.jwt.TokenProvider;
 import org.example.demo13213.service.auth.AuthService;
-import org.slf4j.Logger;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
@@ -20,8 +16,6 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import java.io.IOException;
 
 import static org.example.demo13213.constant.TokenConstants.PREFIX;
-
-
 
 @Component
 @RequiredArgsConstructor
@@ -32,15 +26,13 @@ public class AuthorizationFilter extends OncePerRequestFilter {
     final UserDetailsService userDetailsService;
     final AuthService authService;
 
-
-
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
         String path = request.getRequestURI();
 
 
-        if ( path.equals("/api/v1/products/search/")) {
+        if (path.equals("/api/v1/products/search/")) {
             filterChain.doFilter(request, response);
             return;
         }
@@ -53,5 +45,4 @@ public class AuthorizationFilter extends OncePerRequestFilter {
 
         filterChain.doFilter(request, response);//icaze verrik apinin islemesine
     }
-
 }

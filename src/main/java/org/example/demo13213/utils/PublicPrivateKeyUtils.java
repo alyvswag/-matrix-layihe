@@ -1,9 +1,5 @@
 package org.example.demo13213.utils;
 
-
-
-
-
 import lombok.Getter;
 import org.example.demo13213.security.data.SecurityProperties;
 import org.springframework.stereotype.Component;

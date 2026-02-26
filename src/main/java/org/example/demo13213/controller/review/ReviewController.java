@@ -3,7 +3,6 @@ package org.example.demo13213.controller.review;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import org.example.demo13213.model.dao.Products;
 import org.example.demo13213.model.dao.Reviews;
 import org.example.demo13213.model.dto.request.review.ReviewRequestCreate;
 import org.example.demo13213.model.dto.request.review.ReviewRequestUpdate;
@@ -27,15 +26,18 @@ public class ReviewController {
     public BaseResponse<Reviews> addReview(@RequestBody ReviewRequestCreate ratingAndReview) {
         return BaseResponse.created(reviewService.addReview(ratingAndReview));
     }
+
     @GetMapping("/get-reviews/{productId}")
     public BaseResponse<List<Reviews>> getReviews(@PathVariable Long productId) {
         return BaseResponse.success(reviewService.getReviews(productId));
     }
+
     @PostMapping("/update-review/")
     public BaseResponse<Void> updateReview(@RequestBody ReviewRequestUpdate requestUpdate) {
         reviewService.updateReview(requestUpdate);
         return BaseResponse.success();
     }
+
     @PostMapping("/delete-review/{productId}")
     public BaseResponse<Void> deleteReview(@PathVariable Long productId) {
         reviewService.deleteReview(productId);

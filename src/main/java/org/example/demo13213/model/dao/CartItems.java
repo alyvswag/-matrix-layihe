@@ -6,9 +6,7 @@ import lombok.experimental.FieldDefaults;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
-import java.math.BigDecimal;
 import java.time.OffsetDateTime;
-import java.util.UUID;
 
 @Getter
 @Setter
@@ -46,7 +44,4 @@ public class CartItems {
     @UpdateTimestamp
     @Column(name = "updated_at", nullable = false)
     OffsetDateTime updatedAt;
-
-
 }
-

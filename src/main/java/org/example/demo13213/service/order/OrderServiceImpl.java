@@ -21,7 +21,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import static org.example.demo13213.model.dto.enums.order.OrderStatus.CANCELLED;
 import static org.example.demo13213.model.dto.enums.order.OrderStatus.PAID;
@@ -315,10 +314,4 @@ public class OrderServiceImpl implements OrderService {
         log.info("✅ Coupon {} applied successfully for orderId={}, totalDiscount={}",
                 couponCode, orderId, totalDiscountForOrder);
     }
-
-
-
-
-
-
 }

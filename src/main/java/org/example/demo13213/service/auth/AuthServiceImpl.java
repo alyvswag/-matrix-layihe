@@ -1,10 +1,8 @@
 package org.example.demo13213.service.auth;
 
-
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
-
 import lombok.extern.slf4j.Slf4j;
 import org.example.demo13213.exception.BaseException;
 import org.example.demo13213.model.dao.Carts;
@@ -29,13 +27,11 @@ import static org.example.demo13213.utils.CommonUtils.throwIf;
 
 import org.springframework.security.core.AuthenticationException;
 
-
 @Service
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @RequiredArgsConstructor
 @Slf4j
 public class AuthServiceImpl implements AuthService {
-
 
     final AuthenticationManager authenticationManager;
     final UserRepo userRepo;
@@ -172,5 +168,3 @@ public class AuthServiceImpl implements AuthService {
         }
     }
 }
-
-

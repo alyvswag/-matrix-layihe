@@ -1,10 +1,6 @@
 package org.example.demo13213.utils;
 
-
-
 import org.example.demo13213.exception.BaseException;
-
-import java.util.regex.Pattern;
 
 public class CommonUtils {
     @FunctionalInterface
@@ -17,9 +13,7 @@ public class CommonUtils {
             throw ex;
         }
     }
-
     //ternary operatorunun daha tekmil formasi
     //true gelse exception atilir
     //false gelse davam edirik
-
 }

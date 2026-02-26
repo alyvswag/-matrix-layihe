@@ -10,7 +10,6 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
-import java.util.UUID;
 
 @Getter
 @Setter
@@ -26,7 +25,6 @@ public class Products {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    //@Cascade(Cas)//silienecek
     Long id;
 
     @Column(nullable = false, length = 255)

@@ -1,9 +1,7 @@
 package org.example.demo13213.constant;
 
-
 public final class SecurityPathConstants {
 
-    //sadece test ucun yaradilib
     public static final String[] PERMIT_ALL = {
             "/swagger-ui.html",
             "/webjars/**",
@@ -26,6 +24,4 @@ public final class SecurityPathConstants {
             "/api/v1/reviews/**",
             "/api/admin/stats/**"
     };
-
-
 }

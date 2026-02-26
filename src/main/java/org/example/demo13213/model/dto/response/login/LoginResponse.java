@@ -1,9 +1,7 @@
 package org.example.demo13213.model.dto.response.login;
 
-
 import lombok.*;
 import lombok.experimental.FieldDefaults;
-import org.example.demo13213.model.dao.Users;
 
 @Data
 @Builder

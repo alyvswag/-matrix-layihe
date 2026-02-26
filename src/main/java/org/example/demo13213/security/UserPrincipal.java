@@ -29,8 +29,6 @@ public class UserPrincipal implements UserDetails {
         return Collections.emptyList();
     }
 
-
-
     @Override
     public String getPassword() {
         return password;

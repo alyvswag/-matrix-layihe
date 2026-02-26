@@ -6,7 +6,6 @@ import lombok.experimental.FieldDefaults;
 
 import java.sql.Timestamp;
 import java.time.OffsetDateTime;
-import java.util.UUID;
 
 @Getter
 @Setter

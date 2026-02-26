@@ -1,13 +1,8 @@
 package org.example.demo13213.controller.cart;
 
-
-import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
-import lombok.experimental.FieldDefaults;
 import org.example.demo13213.model.dao.CartItems;
 import org.example.demo13213.model.dto.response.base.BaseResponse;
-
-
 import org.example.demo13213.model.dto.response.cart.ProductCouponResponse;
 import org.example.demo13213.service.cart.CartService;
 import org.springframework.web.bind.annotation.*;
@@ -36,5 +31,4 @@ public class CartController {
     public BaseResponse<List<ProductCouponResponse>> addCart(@RequestParam String coupon) {
         return BaseResponse.success(cartService.applyCoupon(coupon));
     }
-
 }

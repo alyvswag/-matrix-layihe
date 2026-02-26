@@ -1,9 +1,6 @@
 package org.example.demo13213.repo.product;
 
 import org.example.demo13213.model.dao.Products;
-import org.example.demo13213.model.dao.Reviews;
-import org.example.demo13213.model.dao.Users;
-import org.example.demo13213.model.dto.response.adminStats.TopProductResponse;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -33,5 +30,4 @@ public interface ProductRepo extends JpaRepository<Products, Long> {
 
     @Query("SELECT oi.product FROM OrderItems oi WHERE oi.product.isActive = TRUE GROUP BY oi.product ORDER BY SUM(oi.quantity) DESC")
     Page<Products> findBestSellers(Pageable pageable);
-
 }

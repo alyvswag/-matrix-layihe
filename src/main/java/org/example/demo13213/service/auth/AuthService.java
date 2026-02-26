@@ -15,7 +15,4 @@ public interface AuthService {
     void logout();
 
     void setAuthentication(String user);
-
-
-
 }
